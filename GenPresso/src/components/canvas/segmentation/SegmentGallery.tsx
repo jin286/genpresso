@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../ui/tabs";
 import { ImageWithFallback } from "../../figma/ImageWithFallback";
 import { ScrollArea } from "../../ui/scroll-area";
 import type { Segment } from "./types";
+import { useTranslation } from "react-i18next";
 
 interface SegmentGalleryProps {
   onSegmentDrop: (segment: Segment) => void;
@@ -22,6 +23,7 @@ const SegmentGalleryComponent = ({
   onClose,
 }: SegmentGalleryProps) => {
   const [draggingSegment, setDraggingSegment] = useState<Segment | null>(null);
+  const { t } = useTranslation();
 
   // Mock 데이터
   const favoriteSegments: Segment[] = [
@@ -112,15 +114,15 @@ const SegmentGalleryComponent = ({
         <TabsList className="w-full rounded-none border-b" style={{ borderColor: 'var(--color-glass-border)' }}>
           <TabsTrigger value="favorites" className="flex-1 gap-1.5">
             <Star className="w-3.5 h-3.5" />
-            즐겨찾기
+            {t('segment.favorites')}
           </TabsTrigger>
           <TabsTrigger value="recent" className="flex-1 gap-1.5">
             <Clock className="w-3.5 h-3.5" />
-            최근
+            {t('segment.recent')}
           </TabsTrigger>
           <TabsTrigger value="myparts" className="flex-1 gap-1.5">
             <Folder className="w-3.5 h-3.5" />
-            내 파트
+            {t('segment.myParts')}
           </TabsTrigger>
         </TabsList>
 

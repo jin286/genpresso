@@ -7,65 +7,88 @@ import { StarIcon } from "./StarIcon";
 import { FileAttachPopover } from "../ui/file-attach-popover";
 import { CloseButton } from "../ui/close-button";
 import { useLanguage } from "../../contexts/LanguageContext";
-import redChairImage from "figma:asset/1f1c791abafe8f4925c8a4fd1ff4639c74983bb2.png";
-import greenChairImage from "figma:asset/18e195ed2f065d4dc2ae3dc0148d93c162f07cae.png";
+import { agentConversations } from "./agent-conversations";
+import type { ScenarioId } from "../../types";
+import { Resizable } from "re-resizable";
 
 type TabType = "history" | "agent" | "system";
 
 /**
- * Agent 탭 콘텐츠 - AI 대화 내역
+ * Agent 탭 콘텐츠 - AI 대화 내역 (시나리오별)
  */
-const AgentContent = React.memo(() => {
+interface AgentContentProps {
+  scenarioId?: ScenarioId | null;
+}
+
+const AgentContent = React.memo<AgentContentProps>(({ scenarioId }) => {
   const { t } = useLanguage();
+  
+  // 시나리오에 맞는 대화 가져오기
+  const conversation = scenarioId && agentConversations[scenarioId] 
+    ? agentConversations[scenarioId]
+    : agentConversations['default'];
   
   return (
     <div className="flex-1 overflow-y-auto px-3 pt-2 pb-2 space-y-3 min-h-0">
       {/* 시간 구분선 */}
       <div className="text-center">
-        <p className="text-xs text-muted-foreground">2025-11-15 10:00:00</p>
+        <p className="text-xs text-muted-foreground">{conversation.timestamp}</p>
       </div>
 
-      {/* AI 메시지 1 */}
-      <div className="flex items-start gap-2">
-        <AgentAvatar />
-        <div className="flex-1 rounded-lg px-3 py-2" style={{ backgroundColor: 'var(--agent-message-bg)' }}>
-          <p className="text-xs text-foreground">{t('agent.welcome')}</p>
-        </div>
-      </div>
-
-      {/* 사용자 메시지 1 */}
-      <div className="flex justify-end">
-        <div className="rounded-lg px-3 py-2 max-w-[85%]" style={{ backgroundColor: 'var(--agent-user-message-bg)' }}>
-          <p className="text-xs text-foreground">{t('agent.exampleRequest1')}</p>
-        </div>
-      </div>
-
-      {/* AI 메시지 2 */}
-      <div className="flex items-start gap-2">
-        <AgentAvatar />
-        <div className="flex-1 rounded-lg px-3 py-2" style={{ backgroundColor: 'var(--agent-message-bg)' }}>
-          <p className="text-xs text-foreground mb-2">{t('agent.exampleResponse1')}</p>
-          <img src={redChairImage} alt="Red Chair" className="w-full rounded-md mb-1 object-cover h-40" />
-          <p className="text-xs text-muted-foreground mt-1">{t('agent.modelLabel')}: Flux Pro</p>
-        </div>
-      </div>
-
-      {/* 사용자 메시지 2 */}
-      <div className="flex justify-end">
-        <div className="rounded-lg px-3 py-2 max-w-[85%]" style={{ backgroundColor: 'var(--agent-user-message-bg)' }}>
-          <p className="text-xs text-foreground">{t('agent.exampleRequest2')}</p>
-        </div>
-      </div>
-
-      {/* AI 메시지 3 */}
-      <div className="flex items-start gap-2">
-        <AgentAvatar />
-        <div className="flex-1 rounded-lg px-3 py-2" style={{ backgroundColor: 'var(--agent-message-bg)' }}>
-          <p className="text-xs text-foreground mb-2">{t('agent.exampleResponse2')}</p>
-          <img src={greenChairImage} alt="Green Chair" className="w-full rounded-md object-cover h-40" />
-           <p className="text-xs text-muted-foreground mt-1">{t('agent.modelLabel')}: Flux Pro</p>
-        </div>
-      </div>
+      {/* 대화 메시지들 */}
+      {conversation.messages.map((message, index) => (
+        <React.Fragment key={index}>
+          {message.type === 'ai' ? (
+            // AI 메시지
+            <div className="flex items-start gap-2">
+              <AgentAvatar />
+              <div className="flex-1 rounded-lg px-3 py-2" style={{ backgroundColor: 'var(--agent-message-bg)' }}>
+                <p className="text-xs text-foreground mb-2">{message.content}</p>
+                
+                {/* 단일 이미지 */}
+                {message.imageUrl && (
+                  <>
+                    <img 
+                      src={message.imageUrl} 
+                      alt="AI Generated" 
+                      className="w-full rounded-md mb-1 object-cover h-40" 
+                    />
+                    {message.model && (
+                      <p className="text-xs text-muted-foreground mt-1">{t('agent.modelLabel')}: {message.model}</p>
+                    )}
+                  </>
+                )}
+                
+                {/* 여러 이미지 */}
+                {message.images && message.images.length > 0 && (
+                  <>
+                    <div className="grid grid-cols-2 gap-2">
+                      {message.images.map((imgUrl, imgIndex) => (
+                        <img 
+                          key={imgIndex}
+                          src={imgUrl} 
+                          alt={`AI Generated ${imgIndex + 1}`} 
+                          className="w-full rounded-md object-cover h-24" 
+                        />
+                      ))}
+                    </div>
+                    {message.model && (
+                      <p className="text-xs text-muted-foreground mt-1">{t('agent.modelLabel')}: {message.model}</p>
+                    )}
+                  </>
+                )}
+              </div>
+            </div>
+          ) : (
+            // 사용자 메시지
+            <div className="flex justify-end">
+              <div className="rounded-lg px-3 py-2 max-w-[85%]" style={{ backgroundColor: 'var(--agent-user-message-bg)' }}>
+                <p className="text-xs text-foreground">{message.content}</p>
+              </div>
+            </div>
+          )}
+        </React.Fragment>
+      ))}
     </div>
   );
 });
@@ -252,11 +275,11 @@ const ChatInput = React.memo(() => {
 
           <Button 
             size="icon"
-            className="shrink-0 rounded-full h-7 w-7 mb-1.5 bg-primary text-primary-foreground hover:bg-secondary hover:text-secondary-foreground flex items-center justify-center transition-all duration-200 shadow-sm"
+            className="shrink-0 rounded-full h-8 w-8 self-center bg-primary text-primary-foreground hover:bg-secondary hover:text-secondary-foreground flex items-center justify-center transition-all duration-200 shadow-sm"
             onClick={handleSend}
           >
             <IconSparkles 
-              size={12} 
+              size={14} 
               className="transition-colors duration-200"
               color="currentColor"
             />
@@ -315,16 +338,17 @@ TabButton.displayName = 'TabButton';
  * 
  * 구조:
  * - 탭 바 (고정 h-11, 44px)
- * - 콘텐츠 영역 (고정 h-80, 320px, 스크롤 가능)
+ * - 콘텐츠 영역 (가변 높이, 스크롤 가능)
  * - 채팅 입력창 (고정 h-14 + mb-2, 64px)
  * 
- * 총 높이: 428px (44 + 320 + 64)
+ * 크기 조절 가능 (우하단 모서리)
  */
 interface AgentChatPanelProps {
   onClose?: () => void;
+  scenarioId?: ScenarioId | null;
 }
 
-const AgentChatPanelComponent = ({ onClose }: AgentChatPanelProps) => {
+const AgentChatPanelComponent = ({ onClose, scenarioId }: AgentChatPanelProps) => {
   const [activeTab, setActiveTab] = useState<TabType>("agent");
   const [systemPrompt, setSystemPrompt] = useState("");
 
@@ -333,9 +357,36 @@ const AgentChatPanelComponent = ({ onClose }: AgentChatPanelProps) => {
   }, []);
 
   return (
-    <div 
-      className="absolute left-px top-px w-80 rounded-2xl flex flex-col z-40 border-[0.5px] border-solid h-[60vh]" 
+    <Resizable
+      defaultSize={{
+        width: 320,
+        height: window.innerHeight * 0.6, // 60vh
+      }}
+      minWidth={320}
+      minHeight={400}
+      maxWidth={800}
+      maxHeight={window.innerHeight * 0.9}
+      enable={{
+        top: false,
+        right: false,
+        bottom: true, // 하단으로 늘어남
+        left: true, // 좌측으로 늘어남
+        topRight: false,
+        bottomRight: false,
+        bottomLeft: true, // 좌하단 핸들 활성화
+        topLeft: false,
+      }}
+      handleStyles={{
+        left: { cursor: 'ew-resize' },
+        bottom: { cursor: 'ns-resize' },
+        bottomLeft: { cursor: 'nesw-resize' },
+      }}
+      className="rounded-2xl flex flex-col z-[90] border-[0.5px] border-solid"
       style={{
+        position: 'absolute',
+        right: '16px',
+        top: '1px',
+        left: 'auto',
         backdropFilter: 'blur(var(--blur-glass))',
         WebkitBackdropFilter: 'blur(var(--blur-glass))',
         backgroundColor: 'var(--color-glass-bg)',
@@ -369,8 +420,8 @@ const AgentChatPanelComponent = ({ onClose }: AgentChatPanelProps) => {
         />
       </div>
 
-      {/* 콘텐츠 영역 - 최대 320px, 내용에 따라 가변 */}
-      {activeTab === "agent" && <AgentContent />}
+      {/* 콘텐츠 영역 - 가변 높이, 내용에 따라 스크롤 */}
+      {activeTab === "agent" && <AgentContent scenarioId={scenarioId} />}
       {activeTab === "history" && <HistoryContent />}
       {activeTab === "system" && (
         <SystemPromptContent 
@@ -381,7 +432,7 @@ const AgentChatPanelComponent = ({ onClose }: AgentChatPanelProps) => {
       
       {/* 채팅 입력창 - 고정 64px (Agent 탭일 때만) */}
       {activeTab === "agent" && <ChatInput />}
-    </div>
+    </Resizable>
   );
 };
 

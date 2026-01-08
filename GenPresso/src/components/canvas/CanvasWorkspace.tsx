@@ -58,6 +58,7 @@ const SCENARIO_IDS = [
   'grouping-test',
   'agent-conversation',
   'simple-group',
+  'editorial-fashion',
 ] as const;
 
 interface CanvasWorkspaceProps {
@@ -1732,12 +1733,7 @@ export default function CanvasWorkspace({ onBack, scenarioId }: CanvasWorkspaceP
                           onClick={() => handleGenerateNode(node.id)}
                           className="group rounded-full h-10 min-w-[96px] px-4 gap-2 bg-primary text-primary-foreground hover:bg-secondary hover:text-secondary-foreground flex items-center justify-center transition-all duration-200 mt-1"
                         >
-                          <IconSparkles 
-                            size={16} 
-                            className="group-hover:text-secondary-foreground transition-colors duration-200"
-                            color="currentColor"
-                          />
-                          <span className="font-bold group-hover:text-secondary-foreground transition-colors duration-200">생성하기</span>
+                          <span className="font-bold group-hover:text-secondary-foreground transition-colors duration-200">{t('common.generate')}</span>
                         </Button>
                       </div>
                     )}

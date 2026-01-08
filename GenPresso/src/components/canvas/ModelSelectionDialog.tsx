@@ -129,14 +129,14 @@ export const ModelSelectionDialog = React.memo(function ModelSelectionDialog({
 
                       {/* 모델 설명 - 높이 통일을 위해 min-h 설정 및 줄 수 제한 */}
                       <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2 min-h-[2.5em] whitespace-pre-line">
-                        {model.description.replace(/\\n/g, '\n').replace(/\. /g, '.\n')}
+                        {t(`model.descriptions.${model.id}`) || model.description}
                       </p>
                     </div>
 
                     {/* 모델 상세 정보 - 항상 하단에 고정 */}
                     <div className="mt-3 space-y-2 pt-3 border-t text-xs" style={{ borderColor: 'var(--color-glass-border)' }}>
                       <div className="flex items-center justify-between">
-                        <span className="text-muted-foreground">{t('model.size')}</span>
+                        <span className="text-muted-foreground">{t('model.maxResolution')}</span>
                         <span className="font-medium text-foreground">{model.resolution}</span>
                       </div>
                       
@@ -158,7 +158,7 @@ export const ModelSelectionDialog = React.memo(function ModelSelectionDialog({
                       {model.type === 'video' && model.videoLength && (
                         <div className="flex items-center justify-between">
                           <span className="text-muted-foreground">{t('model.maxDuration')}</span>
-                          <span className="font-medium text-foreground">{model.videoLength}</span>
+                          <span className="font-medium text-foreground">{model.videoLength}{t('model.videoLengthUnit')}</span>
                         </div>
                       )}
                       

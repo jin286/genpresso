@@ -515,7 +515,22 @@ export default {
     shareLinkNotSupported: "リンクのコピーに失敗しました。ブラウザが対応していません",
     member: "メンバー",
     noItems: "アイテムがありません",
-    uploadNew: "新規アップロード"
+    uploadNew: "新規アップロード",
+    // GalleryDetailDialog
+    views: "閲覧数",
+    likes: "いいね",
+    workDescription: "作品説明",
+    prompt: "プロンプト",
+    promptCopied: "プロンプトをコピーしました。",
+    generationInfo: "生成情報",
+    model: "モデル",
+    resolution: "解像度",
+    aspectRatio: "アスペクト比",
+    duplicateAndStart: "この作品を複製して開始",
+    workDuplicated: "作品が複製されました。キャンバスで確認してください。",
+    creatorWork: "{{creator}}さんの作品詳細",
+    // GalleryItem
+    clickToOpen: "開く",
   },
   canvas: {
     title: "キャンバス",
@@ -725,7 +740,12 @@ export default {
     snapDisabled: "スナップを無効化",
     extracted: "「{{name}}」セグメントを抽出しました",
     favoriteAdded: "「{{name}}」をお気に入りに追加しました",
-    favoriteRemoved: "「{{name}}」をお気に入りから削除しました"
+    favoriteRemoved: "「{{name}}」をお気に入りから削除しました",
+    
+    // SegmentGallery - タブラベル
+    favorites: "お気に入り",
+    recent: "最近使用",
+    myParts: "マイパーツ"
   },
   agent: {
     title: "AIエージェント",
@@ -813,7 +833,7 @@ export default {
     searchPlaceholder: "プロジェクトを検索...",
     manageDescription: "ワークスペースのすべてのプロジェクトを管理",
     workspace: "ワークスペース",
-    myWorkspace: "{{name}}ワークスペース",
+    myWorkspace: "{{name}}のワークスペース",
     team: "チーム",
     allTeams: "すべてのチーム",
     status: "ステータス",
@@ -821,33 +841,33 @@ export default {
     sortBy: "並べ替え",
     recentModified: "最近更新",
     searchNameCollaborators: "名前、共同編集者で検索...",
-    newProject: "新規プロジェクト",
-    startNew: "新しいプロジェクトを開始",
-    getStarted: "始める",
-    viewAll: "すべて表示",
-    active: "使用中",
-    totalProjects: "総プロジェクト",
-    inProgress: "進行中",
-    completed: "完了",
-    teamMembers: "チームメンバー",
-    recentActivity: "最近のアクティビティ",
-    projectCreated: "プロジェクト作成",
-    fileUploaded: "ファイルアップロード",
-    commentAdded: "コメント追加",
-    projectModified: "プロジェクト編集",
-    timeAgo: {
-      hoursAgo: "{{count}}時間前",
-      daysAgo: "{{count}}日��",
-      minutesAgo: "{{count}}分前"
-    },
-    favoritesDescription: "よく使うプロジェクトとファイルを管理",
-    opened: "開く",
-    bookmarked: "ブックマーク済み",
-    unbookmarked: "ブックマーク解除",
-    dashboardDescription: "プロジェクトのステータスとアクティビティを一目で確認",
-    totalCanvases: "全{{count}}個のキャンバス",
-    createCanvas: "キャンバス作成",
-    start: "開始する"
+    
+    // GenPressoLayout - メイン入力 & プロジェクトカード
+    createNewMessage: "新しいプロジェクトを作成します!",
+    inputRequired: "内容を入力してください",
+    newProject: "新しいプロジェクト",
+    startNew: "新規作成",
+    getStarted: "開始する",
+    viewAll: "すべて見る",
+    
+    // GenPressoLayout - ブックマークシステム
+    bookmark: "ブックマーク",
+    bookmarkAdded: "ブックマークに追加されました",
+    bookmarkRemoved: "ブックマークが解除されました",
+    noBookmarked: "ブックマークしたプロジェクトがありません",
+    noBookmarkedDescription: "ブックマークフィルターを解除するか、新しいプロジェクトを開始してください",
+    filterAll: "すべて",
+    filterRecent: "最近",
+    filterBookmarked: "ブックマーク",
+    
+    // GenPressoLayout - フィルター & Drawer
+    sortRecent: "最近更新",
+    sortName: "名前順",
+    detailTitle: "プロジェクト詳細",
+    detailDescription: "プロジェクトに関する詳細情報",
+    totalCanvases: "合計{{count}}個のキャンバス",
+    createCanvas: "キャンバスを作成",
+    start: "開始する",
   },
   member: {
     owner: "オーナー",
@@ -887,6 +907,72 @@ export default {
     usage: "使用量",
     credits: "クレジット",
     basic: "ベーシック",
+    nextBillingDate: "次回支払日",
+    cancelSubscription: "サブスクリプションをキャンセル",
+    confirmCancel: "サブスクリプションをキャンセルしてもよろしいですか？",
+    cancelSuccess: "サブスクリプションが正常にキャンセルされました",
+    upgradeSuccess: "{{plan}}にアップグレードしました",
+    downgradeSuccess: "{{plan}}にダウングレードしました",
+    monthlyPrice: "{{price}}/月",
+    annualPrice: "{{price}}/年",
+    paymentDate: "支払日",
+    paymentDesc: "支払い履歴",
+    paymentAmount: "支払金額",
+    invoice: "領書",
+    changePlanTitle: "サブスクリプションプランを変更しますか？",
+    changePlanDescription: "変更したいプランを選択してください。",
+    changeToSelectedPlan: "選択したプランに変更",
+    changePlanNoticeTitle: "必ずご確認くだい",
+    changePlanNotice: "プラン変更/サブスクリプションキャンセルは次回支払日から適用されます。既に支払済みの期間については返金不可能で、残りの期間は現在のプランの特典を引き続きご利用いただけます。",
+    couponError: "無効なクーポンコードです",
+    monthly: "月間",
+    yearly: "年間",
+    currentlySubscribing: "現在購読中",
+    selectPlanButton: "プランを選択",
+    planNames: {
+      free: "Free",
+      lite: "Lite",
+      basic: "Basic",
+      plus: "Plus",
+      pro: "Pro",
+      enterprise: "Enterprise"
+    },
+    planFeatures: {
+      free: {
+        item1: "Nano Bananaで62枚の画像生成",
+        item2: "Nano Banana Proで20枚の画像生成",
+        item3: "Veo 3.1 fastで2本の動画制作",
+        note: "サインアップ後に提供される無料クレジットは、使い切ると再提供されません"
+      },
+      lite: {
+        credit: "月間クレジット2,000個",
+        item1: "Nano Bananaで250枚の画像生成",
+        item2: "Nano Banana Proで83枚の画像生成",
+        item3: "Veo 3.1 fastで9本の動画制作"
+      },
+      basic: {
+        credit: "月間クレジット3,500個",
+        item1: "Nano Bananaで437枚の画像生成",
+        item2: "Nano Banana Proで145枚の画像生成",
+        item3: "Veo 3.1 fastで16本の動画制作"
+      },
+      pro: {
+        credit: "月間クレジット12,000個",
+        item1: "Nano Bananaで1,500枚の画像生成",
+        item2: "Nano Banana Proで500枚の画像生成",
+        item3: "Veo 3.1 fastで57本の動画制作"
+      }
+    },
+    commonFeatures: {
+      bgRemoval: "画像背景除去",
+      elementSelect: "画像内の特定要素指定",
+      grouping: "グループ化と管理",
+      refUpload: "参照画像アップロード",
+      proCombined: "画像背景除去および特定要素指定",
+      unlimitedRef: "参照画像、動画無制限アップロード",
+      agentCollab: "エージェントとの無制限対話および共同作業",
+      fastResponse: "迅速なサービス対応"
+    },
     features: {
       freeImageGeneration: "無料画像生成",
       basicResolution: "基本解像度",
@@ -905,7 +991,6 @@ export default {
     registerCouponDescription: "クーポンコードを入力してクレジットを受け取ります",
     couponPlaceholder: "クーポンコードを入力",
     status: "ステータス",
-    nextBillingDate: "次回支払日",
     changePlan: "プラン変更",
     paymentInfo: "支払い情報",
     paymentMethod: "支払い方法",
@@ -913,18 +998,18 @@ export default {
     selectPlan: "プラン選択",
     selectPlanDescription: "プロジェクトに合ったプランを選択",
     yearlyDiscountNotice: "年間サブスクリプションで2ヶ月無料！",
-    monthly: "月間",
-    yearly: "年間",
     providedCredits: "提供クレジット",
     creditTopUp: "クレジットチャージ",
     creditTopUpDescription: "必要に応じて追加クレジットをチャージ",
     maxAmount: "最大{{amount}}",
+    planChangeSuccess: "プランが正常に変更されました",
+    refundNotice: "残り期間の返金はありません",
     creditRefundNotice: "チャージされたクレジットは返金されません",
     enterpriseInquiry: "企業問い合わせ",
     enterpriseDescription1: "大規模チーム向けのカスタムプランが必要ですか？",
     enterpriseDescription2: "専任マネージャーと相談して最適なソリューションを提供します。",
     contactSales: "営業チームに問い合わせ",
-    couponError: "無効なクーポンコードです"
+    backToSettings: "設定に戻る"
   },
   upload: {
     title: "ファイルアップロード",
@@ -943,14 +1028,37 @@ export default {
     select: "モデル選択",
     current: "現在のモデル",
     change: "変更",
-    recommended: "推奨",
-    all: "すべてのモデル",
+    recommended: "おすすめ",
+    all: "全モデル",
     imageGeneration: "画像生成",
     videoGeneration: "動画生成",
     textGeneration: "テキスト生成",
-    audio: "オーディオ",
+    audio: "サウンド",
     supported: "サポート",
-    notSupported: "非サポート"
+    notSupported: "非サポート",
+    size: "サイズ",
+    credits: "クレジット",
+    ratio: "比率",
+    maxDuration: "最大時間",
+    maxResolution: "最大",
+    totalCredits: "合計クレジット",
+    creditsUnit: "クレジット",
+    descriptions: {
+      "nano-banana": "テキストベースの高速画像生成軽量モデル。\nシンプルな画像生成に最適化。",
+      "gemini-2.5-flash": "Google最新画像生成モデル。\n高速と高品質。",
+      "seedream-4.0": "高度な画像生成とスタイル転送。\n複雑なプロンプトを理解可能。",
+      "veo-3.1-fast": "高速ビデオ生成。\n速度と品質のバランス。",
+      "veo-3.1": "高品質ビデオ生成。\n精密なディテールと自然な動き。",
+      "sora-2": "OpenAI最新ビデオ生成技術。\n最高品質のビデオ生成。",
+      "nano-banana-img": "画像編集・スタイル変換軽量モデル。\n高速な画像変換作業に最適化。",
+      "gemini-2.5-flash-img": "Google最新画像編集モデル。\n高速で正確な変換。",
+      "seedream-4.0-img": "高度な画像編集とスタイル転送。\n複雑な調整が可能。",
+      "sora-2-img": "画像ベースのビデオ生成。\nOpenAI最新技術。",
+      "sora-2-pro": "Sora 2のプロバージョン。\n最高品質ビデオ生成。",
+      "veo-3.1-fast-img": "画像を高速でビデオに変換。\n短時間で結果確認。",
+      "veo-3.1-img": "高品質画像ベースビデオ生成。\n自然な動作実装。"
+    },
+    videoLengthUnit: "秒"
   },
   notification: {
     title: "通知",
@@ -1108,9 +1216,12 @@ export default {
     selectNodesToMove: "作業台に移動するノードを選択してください。",
     onlyImageNodesToMove: "画像ノードのみ作業台に移動できます。",
     detailEditWorkspace: "詳細編集作業台",
-    detailEditWorkspaceOpened: "詳細編集作業台を開きました",
+    detailEditWorkspaceOpened: "詳細編集作業台を開きまし",
     groupCreated: "グループ\"{{name}}\"が作成されました ({{count}}個のノード)",
-    groupDeleted: "グループ削除"
+    groupDeleted: "グループ削除",
+    workspace: "ワークスペース",
+    leftToolbar: "左サイドバー",
+    topToolbar: "上部バー",
   },
   layout: {
     continueSection: {

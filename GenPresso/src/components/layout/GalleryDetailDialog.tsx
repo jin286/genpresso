@@ -8,6 +8,7 @@ import { IconEye, IconHeart, IconBookmark, IconShare } from "../icons";
 import { toast } from "sonner@2.0.3";
 import { Play } from "lucide-react";
 import { useClipboard } from "./hooks/useClipboard";
+import { useLanguage } from "../../contexts/LanguageContext";
 
 interface GalleryDetailDialogProps {
   open: boolean;
@@ -36,6 +37,7 @@ export function GalleryDetailDialog({
   onDuplicate 
 }: GalleryDetailDialogProps) {
   const { copyToClipboard } = useClipboard();
+  const { t } = useLanguage();
 
   if (!item) return null;
 
@@ -45,7 +47,7 @@ export function GalleryDetailDialog({
 
   const handleDuplicate = () => {
     onDuplicate?.();
-    toast.success("작업이 복제되었습니다. 캔버스에서 확인하세요.");
+    toast.success(t('gallery.workDuplicated'));
   };
 
   return (
@@ -54,12 +56,12 @@ export function GalleryDetailDialog({
         <VisuallyHidden>
           <DialogTitle>{item.category}</DialogTitle>
           <DialogDescription>
-            {item.creator}님의 작업물 상세 정보
+            {t('gallery.creatorWork', { creator: item.creator })}
           </DialogDescription>
         </VisuallyHidden>
 
-        {/* 좌측: 이미지 영역 (검은 배경, 이미지 전체 보기) */}
-        <div className="relative w-full md:w-[65%] h-[40vh] md:h-full bg-black flex items-center justify-center overflow-hidden shrink-0">
+        {/* 좌측: 이미지 영역 (밝은 회색 배경, 이미지 전체 보기) */}
+        <div className="relative w-full md:w-[65%] h-[40vh] md:h-full bg-muted flex items-center justify-center overflow-hidden shrink-0">
           <ImageWithFallback
             src={item.finalResultImage}
             alt={item.category}
@@ -104,12 +106,12 @@ export function GalleryDetailDialog({
                 <div className="flex items-center gap-2 text-sm">
                   <IconEye size={16} className="text-muted-foreground" />
                   <span className="font-medium">{item.views}</span>
-                  <span className="text-xs text-muted-foreground">Views</span>
+                  <span className="text-xs text-muted-foreground">{t('gallery.views')}</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
                   <IconHeart size={16} className="text-muted-foreground" />
                   <span className="font-medium">{item.likes}</span>
-                  <span className="text-xs text-muted-foreground">Likes</span>
+                  <span className="text-xs text-muted-foreground">{t('gallery.likes')}</span>
                 </div>
               </div>
             </div>
@@ -117,7 +119,7 @@ export function GalleryDetailDialog({
             {/* 설명 */}
             <div>
               <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
-                작업 설명
+                {t('gallery.workDescription')}
               </h3>
               <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
                 {item.description}
@@ -127,7 +129,7 @@ export function GalleryDetailDialog({
             {/* 프롬프트 */}
             <div>
               <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
-                프롬프트
+                {t('gallery.prompt')}
               </h3>
               <div 
                 className="rounded-xl p-4 text-sm text-muted-foreground leading-relaxed font-mono relative group"
@@ -142,10 +144,10 @@ export function GalleryDetailDialog({
                   size="icon" 
                   className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity h-6 w-6"
                   onClick={() => {
-                    copyToClipboard(item.prompt, "프롬프트가 복사되었습니다.");
+                    copyToClipboard(item.prompt, t('gallery.promptCopied'));
                   }}
                 >
-                  <span className="sr-only">복사</span>
+                  <span className="sr-only">{t('common.copy')}</span>
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                 </Button>
               </div>
@@ -153,18 +155,18 @@ export function GalleryDetailDialog({
 
             {/* 메타데이터 */}
             <div>
-              <h3 className="text-sm font-semibold text-foreground mb-3">생성 정보</h3>
+              <h3 className="text-sm font-semibold text-foreground mb-3">{t('gallery.generationInfo')}</h3>
               <div className="grid grid-cols-2 gap-4">
                 <div className="p-3 rounded-lg bg-muted/30 border border-border/30">
-                  <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1.5 font-semibold">Model</div>
+                  <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1.5 font-semibold">{t('gallery.model')}</div>
                   <div className="text-xs font-medium">{item.model}</div>
                 </div>
                 <div className="p-3 rounded-lg bg-muted/30 border border-border/30">
-                  <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1.5 font-semibold">Resolution</div>
+                  <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1.5 font-semibold">{t('gallery.resolution')}</div>
                   <div className="text-xs font-medium">{item.resolution}</div>
                 </div>
                 <div className="p-3 rounded-lg bg-muted/30 border border-border/30">
-                  <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1.5 font-semibold">Aspect Ratio</div>
+                  <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1.5 font-semibold">{t('gallery.aspectRatio')}</div>
                   <div className="text-xs font-medium">{item.aspectRatio}</div>
                 </div>
               </div>
@@ -177,14 +179,14 @@ export function GalleryDetailDialog({
               className="flex-1 h-11 text-base font-medium shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5"
               onClick={handleDuplicate}
             >
-              이 작업 복제하여 시작하기
+              {t('gallery.duplicateAndStart')}
             </Button>
             <Button 
               variant="outline"
               className="h-11 px-6 border-border/50 hover:bg-muted/50"
               onClick={() => onOpenChange(false)}
             >
-              닫기
+              {t('common.close')}
             </Button>
           </div>
         </div>

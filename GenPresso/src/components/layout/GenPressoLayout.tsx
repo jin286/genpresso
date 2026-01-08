@@ -186,6 +186,7 @@ const GalleryItem = memo(function GalleryItem({
   onLikeToggle?: (e: React.MouseEvent) => void;
 }) {
   const { copyToClipboard } = useClipboard();
+  const { t } = useLanguage();
   // 캐시된 값들 계산
   const viewCount = `${((index * 0.3 + 1) % 5 + 1).toFixed(1)}k`;
   const likeCount = Math.floor((index * 1.7 + 1) % 20 + 1) + (isLiked ? 1 : 0);
@@ -199,17 +200,12 @@ const GalleryItem = memo(function GalleryItem({
       }}
       onClick={onClick}
     >
-      {/* Placeholder 배경 */}
-      <div className="absolute inset-0 bg-muted flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-12 h-12 mx-auto mb-2 bg-muted-foreground/20 rounded-lg flex items-center justify-center">
-            <svg className="w-6 h-6 text-muted-foreground/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-          </div>
-          <p className="text-xs text-muted-foreground">{item.category}</p>
-        </div>
-      </div>
+      {/* 실제 이미지 표시 */}
+      <ImageWithFallback
+        src={item.finalResultImage}
+        alt={item.category}
+        className="absolute inset-0 w-full h-full object-cover"
+      />
 
       {/* 호버 오버레이 - Figma 디자인 */}
       <div className="absolute inset-0 bg-gradient-to-b from-[rgba(9,9,11,0.5)] to-[rgba(9,9,11,0.7)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl">
@@ -234,10 +230,17 @@ const GalleryItem = memo(function GalleryItem({
               </div>
             </div>
             
-            {/* 중앙 - Click 버튼 */}
+            {/* 중앙 - 열기 버튼 (다국어 처리) */}
             <div className="flex items-center justify-center absolute inset-0 pointer-events-none">
-              <div className="h-[28px] w-[76px] pointer-events-auto">
-                <Click />
+              <div 
+                className="pointer-events-auto px-6 py-2 rounded-full text-white text-sm font-medium transition-all duration-200 hover:scale-110"
+                style={{
+                  backgroundColor: 'rgba(79, 168, 216, 0.9)',
+                  backdropFilter: 'blur(10px)',
+                  WebkitBackdropFilter: 'blur(10px)',
+                }}
+              >
+                {t('gallery.clickToOpen')}
               </div>
             </div>
             
@@ -332,10 +335,10 @@ const MainContent = memo(function MainContent({ onNavigateToCanvas, onLogoClick,
   // 입력창에서 생성하기 실행
   const handleCreateNew = () => {
     if (inputValue.trim()) {
-      toast.success("새로운 프로젝트를 생성합니다!");
+      toast.success(t('project.createNewMessage'));
       setInputValue("");
     } else {
-      toast.error("내용을 입력해주세요");
+      toast.error(t('project.inputRequired'));
     }
   };
 
@@ -354,10 +357,10 @@ const MainContent = memo(function MainContent({ onNavigateToCanvas, onLogoClick,
       const newSet = new Set(prev);
       if (newSet.has(itemId)) {
         newSet.delete(itemId);
-        toast.success("북마크가 해제되었습니다");
+        toast.success(t('project.bookmarkRemoved'));
       } else {
         newSet.add(itemId);
-        toast.success("북마크에 추가되었습니다");
+        toast.success(t('project.bookmarkAdded'));
       }
       return newSet;
     });
@@ -468,7 +471,7 @@ const MainContent = memo(function MainContent({ onNavigateToCanvas, onLogoClick,
                   }`}
                   onClick={() => setSortMode('recent')}
                 >
-                  최근 수정
+                  {t('project.sortRecent')}
                 </Button>
                 <Button
                   variant="ghost"
@@ -480,7 +483,7 @@ const MainContent = memo(function MainContent({ onNavigateToCanvas, onLogoClick,
                   }`}
                   onClick={() => setSortMode('name')}
                 >
-                  이름순
+                  {t('project.sortName')}
                 </Button>
                 <Button
                   variant="ghost"
@@ -493,7 +496,7 @@ const MainContent = memo(function MainContent({ onNavigateToCanvas, onLogoClick,
                   onClick={() => setSortMode('bookmarked')}
                 >
                   <IconBookmark className="w-3.5 h-3.5 mr-1" />
-                  북마크
+                  {t('project.filterBookmarked')}
                 </Button>
               </div>
             </div>
@@ -512,10 +515,10 @@ const MainContent = memo(function MainContent({ onNavigateToCanvas, onLogoClick,
                     <IconFolder className="w-10 h-10 text-primary/50" />
                   </div>
                   <h3 className="text-lg font-medium text-foreground">
-                    북마크한 프로젝트가 없습니다
+                    {t('project.noBookmarked')}
                   </h3>
                   <p className="text-sm text-muted-foreground">
-                    북마크 필터를 해제하거나 새로운 프로젝트를 시작해보세요
+                    {t('project.noBookmarkedDescription')}
                   </p>
                   <div className="flex gap-2 justify-center pt-4">
                     <Button
@@ -567,10 +570,10 @@ const MainContent = memo(function MainContent({ onNavigateToCanvas, onLogoClick,
                     {/* 텍스트 */}
                     <div className="text-center space-y-0.5">
                       <div className="text-sm font-medium leading-tight text-foreground">
-                        새로운 프로젝트
+                        {t('project.newProject')}
                       </div>
                       <div className="text-xs text-muted-foreground leading-tight">
-                        시작하기
+                        {t('project.startNew')}
                       </div>
                     </div>
                   </div>
@@ -980,8 +983,8 @@ const MainContent = memo(function MainContent({ onNavigateToCanvas, onLogoClick,
           style={getGlassmorphismStyle()}
         >
           <VisuallyHidden>
-            <DrawerTitle>프로젝트 상세</DrawerTitle>
-            <DrawerDescription>프로젝트에 대한 설명과 정보</DrawerDescription>
+            <DrawerTitle>{t('project.detailTitle')}</DrawerTitle>
+            <DrawerDescription>{t('project.detailDescription')}</DrawerDescription>
           </VisuallyHidden>
           <div className="relative flex-1 overflow-y-auto px-5 py-6 min-h-0">
             {selectedProject && (
@@ -1327,7 +1330,7 @@ export default function GenPressoLayout() {
               }}
               style={{ transformOrigin: 'top right' }}
             >
-              <AgentChatPanel onClose={() => setIsAgentDrawerOpen(false)} />
+              <AgentChatPanel onClose={() => setIsAgentDrawerOpen(false)} scenarioId={currentPage === 'canvas' ? (currentScenario as any) : null} />
             </motion.div>
           )}
         </div>

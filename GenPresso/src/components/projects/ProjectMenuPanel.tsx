@@ -552,7 +552,7 @@ function ViewAllProjects({ onNavigateToCanvas }: { onNavigateToCanvas?: (scenari
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                {sortType === "recent" ? "최근 수정" : sortType === "name" ? "이름순" : "북마크"}
+                {sortType === "recent" ? t('project.sortRecent') : sortType === "name" ? t('project.sortName') : t('project.filterBookmarked')}
               </button>
               {sortType !== "bookmark" && <div className="w-px h-3 bg-border mx-1" />}
             </React.Fragment>
@@ -570,8 +570,8 @@ function ViewAllProjects({ onNavigateToCanvas }: { onNavigateToCanvas?: (scenari
             <Plus className="w-6 h-6 text-primary" />
           </div>
           <div className="text-center">
-            <p className="text-sm font-medium text-foreground">새로운 프로젝트</p>
-            <p className="text-xs text-muted-foreground mt-0.5">시작하기</p>
+            <p className="text-sm font-medium text-foreground">{t('project.newProject')}</p>
+            <p className="text-xs text-muted-foreground mt-0.5">{t('project.startNew')}</p>
           </div>
         </div>
 

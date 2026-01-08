@@ -11,6 +11,7 @@ export const continueProjects = [
   { id: 'p10', name: '건축디자인', scenarioId: 'grouping-test', lastModified: '2025-11-12 14:00', isBookmarked: true },
   { id: 'p11', name: '시나리오 제작', scenarioId: 'agent-conversation', lastModified: '2025-11-15 10:00', isBookmarked: true },
   { id: 'p12', name: '자연 풍경 디자인', scenarioId: 'simple-group', lastModified: '2025-11-16 11:00', isBookmarked: true },
+  { id: 'p13', name: '화보 디자인', scenarioId: 'editorial-fashion', lastModified: '2026-01-08 15:30', isBookmarked: true },
 ];
 
 export const exploreItems = [

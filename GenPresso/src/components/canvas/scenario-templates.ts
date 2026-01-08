@@ -1,5 +1,6 @@
 import { ScenarioTemplate, ScenarioId } from "../../types";
 import { createLayeredNodes } from "./utils/node-layout";
+import { editorialFashionScenario } from "./editorial-fashion-scenario";
 import chandelierImage from "figma:asset/1d1efc18a9116bed6e4ea9ccfd76adb01854d2e1.png";
 import chandelierRoomImage from "figma:asset/6177c6d59f3e1da86937d2c8d960da1187a0a3e0.png";
 import bedroomImage from "figma:asset/8a5bb0d3cf26f9438b54e42bf9834e3eb1a067cd.png";
@@ -1214,6 +1215,7 @@ export const SCENARIO_TEMPLATES: Record<ScenarioId, ScenarioTemplate> = {
   'segmentation-test': segmentationTestScenario,
   'grouping-test': groupingTestScenario,
   'agent-conversation': agentConversationScenario,
+  'editorial-fashion': editorialFashionScenario,
   'simple-group': {
     id: 'simple-group',
     name: '12. Simple Group Scenario',

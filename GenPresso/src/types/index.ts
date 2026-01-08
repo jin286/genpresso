@@ -136,7 +136,8 @@ export type ScenarioId =
   | 'segmentation-test'        // 09. Segmentation Workflow Test
   | 'grouping-test'            // 10. Grouping Test + Temporary Workspace
   | 'agent-conversation'       // 11. Agent Conversation Scenario
-  | 'simple-group';            // 12. Simple Group Scenario
+  | 'simple-group'             // 12. Simple Group Scenario
+  | 'editorial-fashion';       // 13. Editorial Fashion - 화보 디자인
 
 export interface NodeData {
   id: string;
