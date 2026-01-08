@@ -1,0 +1,806 @@
+/* Pretendard 폰트 import - 한국어 최적화 폰트 */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+
+:root {
+  /* 폰트 시스템 - Pretendard 기반 */
+  --font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+  --font-size-base: 16px;
+  
+  /* 브레이크포인트 */
+  --breakpoint-sm: 480px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  
+  /* 간격 스케일 (8pt Grid + 커스텀 3px) */
+  --spacing-0\.75: 0.1875rem; /* 3px - 캔버스 도구바 버튼 패딩용 */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  
+  /* 유동 타이포그래피 */
+  --fluid-sm: clamp(14px, 2.5vw, 16px);
+  --fluid-base: clamp(16px, 3vw, 20px);
+  --fluid-lg: clamp(20px, 4vw, 28px);
+  --fluid-xl: clamp(24px, 5vw, 36px);
+  --fluid-2xl: clamp(32px, 6vw, 48px);
+  --fluid-3xl: clamp(40px, 7vw, 56px);
+  
+  /* 타이포그래피 토큰 */
+  --text-xxs: 10px; /* 노드 내부 보조 정보 전용 */
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 18px;
+  --text-xl: 20px;
+  --text-2xl: 24px;
+  --text-3xl: 30px;
+  --text-4xl: 36px;
+  
+  /* 그림자 */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+  
+  /* 라이트 모드 색상 시스템 (기본값) */
+  --background: #e8e8e8;
+  --foreground: #1a1a1a;
+  --card: #ffffff;
+  --card-foreground: #1a1a1a;
+  --popover: #ffffff;
+  --popover-foreground: #1a1a1a;
+  --primary: #4fa8d8;
+  --primary-foreground: #ffffff;
+  --primary-bg: rgba(79, 168, 216, 0.05);
+  --secondary: #f0f0f0;
+  --secondary-foreground: #2a2a2a;
+  --muted: #d8d8d8;
+  --muted-foreground: #5a5a5a;
+  --accent: #f0f0f0;
+  --accent-foreground: #2a2a2a;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --success: #059669;
+  --success-foreground: #ffffff;
+  --warning: #d97706;
+  --warning-foreground: #ffffff;
+  --info: #4fa8d8;
+  --info-foreground: #ffffff;
+  --border: rgba(0, 0, 0, 0.15);
+  --input: #f5f5f5;
+  --input-background: #ffffff;
+  --switch-background: #d8d8d8;
+  --ring: #4fa8d8;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  
+  /* 아바타 전용 색상 (투명도 없이 명확한 fill) */
+  --avatar-bg: #ffffff;
+  --avatar-border: rgba(0, 0, 0, 0.2);
+  
+  /* 라이트모드 글래스모피즘 효과 토큰 - 체계적인 설계 */
+  --glass-bg: rgba(255, 255, 255, 0.5);
+  --glass-border: rgba(0, 0, 0, 0.15);
+  --glass-backdrop: 12px;
+  --glass-text: #1a1a1a;
+  --glass-icon: #2a2a2a;
+  --glass-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.1);
+  --glass-hover-bg: rgba(0, 0, 0, 0.05);
+  --glass-active-bg: rgba(0, 0, 0, 0.1);
+  
+  /* 라이트모드 드롭다운 전용 스타일 (더 명확한 대비) */
+  --dropdown-bg: rgba(252, 252, 252, 0.98);
+  --dropdown-border: rgba(0, 0, 0, 0.2);
+  --dropdown-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.15);
+  
+  /* 라이트모드 Input/Form 요소 스타일 (명확한 구분) */
+  --input-bg: rgba(255, 255, 255, 0.7);
+  --input-border: rgba(0, 0, 0, 0.25);
+  --input-shadow: none;
+  --input-focus-border: rgba(79, 168, 216, 0.6);
+  --input-focus-shadow: none;
+  
+  /* 라이트모드 버튼 호버/액티브 스타일 */
+  --button-hover-bg: rgba(245, 245, 245, 0.95);
+  --button-hover-border: rgba(0, 0, 0, 0.35);
+  --button-hover-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.15);
+  --button-active-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1);
+  
+  /* 라이트모드 카드 스타일 */
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --card-border: rgba(0, 0, 0, 0.15);
+  --card-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.08);
+  --card-hover-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.12);
+  
+  /* 라이트모드 CloseButton 스타일 */
+  --close-btn-bg-start: rgba(0, 0, 0, 0.08);
+  --close-btn-bg-end: rgba(0, 0, 0, 0.06);
+  --close-btn-border: rgba(0, 0, 0, 0.2);
+  --close-btn-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  --close-btn-icon: #333333;
+  --close-btn-icon-hover: #4fa8d8;
+  
+  /* Member 배지 스타일 */
+  --member-badge-bg: #35a9dd;
+  --member-badge-border: #35a9dd;
+  --member-badge-text: #ffffff;
+  
+  /* Agent 패널 스타일 - 라이트모드 */
+  --agent-message-bg: rgba(82, 82, 91, 0.07);
+  --agent-user-message-bg: rgba(79, 168, 216, 0.15);
+  --history-item-bg: rgba(82, 82, 91, 0.08);
+  --comment-item-bg: rgba(79, 168, 216, 0.1);
+  --tab-active-gradient-start: rgba(0, 0, 0, 0);
+  --tab-active-gradient-end: rgba(0, 0, 0, 0.05);
+  --icon-fill: #333333;
+  
+  /* 폴더 스타일 탭 - 라이트모드 */
+  --tab-active-bg: rgba(0, 0, 0, 0.08);
+  --tab-inactive-bg: rgba(0, 0, 0, 0.15);
+  --popover-bg: rgba(255, 255, 255, 0.95);
+  --popover-border: rgba(0, 0, 0, 0.15);
+  --popover-button-bg: rgba(0, 0, 0, 0.05);
+  --popover-button-border: rgba(0, 0, 0, 0.1);
+  --popover-button-hover-bg: rgba(0, 0, 0, 0.1);
+  --popover-button-hover-border: rgba(0, 0, 0, 0.2);
+  --popover-icon-bg: rgba(0, 0, 0, 0.1);
+  --popover-icon-hover-bg: rgba(0, 0, 0, 0.2);
+  --popover-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+  
+  /* 노드 타입별 뱃지 색상 - 라이트모드 */
+  --node-badge-text-bg: rgba(34, 197, 94, 0.15);
+  --node-badge-text-text: #16a34a;
+  --node-badge-image-bg: rgba(79, 168, 216, 0.15);
+  --node-badge-image-text: #2563eb;
+  --node-badge-video-bg: rgba(168, 85, 247, 0.15);
+  --node-badge-video-text: #9333ea;
+  --node-badge-upload-bg: rgba(79, 168, 216, 0.15);
+  --node-badge-upload-text: #2563eb;
+  --node-badge-process-bg: rgba(249, 115, 22, 0.15);
+  --node-badge-process-text: #ea580c;
+  --node-badge-mix-bg: rgba(236, 72, 153, 0.15);
+  --node-badge-mix-text: #db2777;
+  --node-badge-composition-bg: rgba(147, 51, 234, 0.15);
+  --node-badge-composition-text: #9333ea;
+  
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --radius: 0.625rem;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #1a1a1a;
+  --sidebar-primary: #4fa8d8;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f8fafc;
+  --sidebar-accent-foreground: #334155;
+  --sidebar-border: #e2e8f0;
+  --sidebar-ring: #4fa8d8;
+}
+
+@theme inline {
+  /* 간격 토큰을 Tailwind에서 사용 가능하게 */
+  --spacing-1: var(--space-1);
+  --spacing-2: var(--space-2);
+  --spacing-3: var(--space-3);
+  --spacing-4: var(--space-4);
+  --spacing-6: var(--space-6);
+  --spacing-8: var(--space-8);
+  --spacing-12: var(--space-12);
+  --spacing-16: var(--space-16);
+  --spacing-20: var(--space-20);
+  --spacing-24: var(--space-24);
+  
+  /* 그림자 토큰 */
+  --shadow-token-sm: var(--shadow-sm);
+  --shadow-token-md: var(--shadow-md);
+  --shadow-token-lg: var(--shadow-lg);
+  --shadow-token-xl: var(--shadow-xl);
+  
+  /* 색상 시스템 */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-switch-background: var(--switch-background);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  
+  /* 글래스모피즘 토큰 추가 */
+  --color-glass-bg: var(--glass-bg);
+  --color-glass-border: var(--glass-border);
+  --color-glass-text: var(--glass-text);
+  --color-glass-icon: var(--glass-icon);
+  --color-glass-shadow: var(--glass-shadow);
+  --shadow-glass-shadow: var(--glass-shadow);
+  --color-glass-hover-bg: var(--glass-hover-bg);
+  --color-glass-active-bg: var(--glass-active-bg);
+  --blur-glass: var(--glass-backdrop);
+  
+  /* 아바타 토큰 추가 */
+  --color-avatar-bg: var(--avatar-bg);
+  --color-avatar-border: var(--avatar-border);
+}
+
+/* 글래스모피즘 컴포넌트 전역 스타일 */
+[data-name*="Profile"],
+[data-name*="SideNav"],
+[data-name*="HelpPanel"],
+[data-name*="ChatPanel"] {
+  color: var(--color-glass-text);
+}
+
+/* 글래스 컴포넌트 내 SVG 아이콘 색상 동적 변경 */
+.bg-\[var\(--color-glass-bg\)\] svg [stroke],
+[data-name*="Profile"] svg [stroke],
+[data-name*="SideNav"] svg [stroke],
+[data-name*="ChatPanel"] svg [stroke] {
+  stroke: var(--color-glass-icon) !important;
+}
+
+.bg-\[var\(--color-glass-bg\)\] svg [fill]:not([fill="none"]),
+[data-name*="Profile"] svg [fill]:not([fill="none"]),
+[data-name*="SideNav"] svg [fill]:not([fill="none"]),
+[data-name*="ChatPanel"] svg [fill]:not([fill="none"]) {
+  fill: var(--color-glass-icon) !important;
+}
+
+/* QuickActionButton 아이콘의 색상을 currentColor로 보존 (호버 효과 지원) */
+.quick-action-icon svg [stroke] {
+  stroke: currentColor !important;
+}
+
+.quick-action-icon svg [fill]:not([fill="none"]) {
+  fill: currentColor !important;
+}
+
+/* HoverableListItem 아이콘의 색상을 보존 */
+.hoverable-icon-wrapper svg [stroke] {
+  stroke: currentColor !important;
+}
+
+.hoverable-icon-wrapper svg [fill]:not([fill=\"none\"]) {
+  fill: currentColor !important;
+}
+
+/* HelpPanel 아이콘 색상 예외 처리 - 글래스 아이콘 규칙 무시 */
+.help-panel svg path {
+  fill: var(--fill-0) !important;
+}
+
+/* IconSparkles (생성하기 버튼)의 색상을 보존 - 글래스 아이콘 규칙 무시 */
+.bg-primary svg [fill]:not([fill=\"none\"]),
+.bg-primary svg [stroke] {
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}
+
+/* RoundButton 호버 및 활성 상태 스타일 */
+.round-button-icon {
+  color: var(--color-glass-icon);
+}
+
+.round-button-wrapper:hover .round-button-icon:not(.active) {
+  color: var(--primary) !important;
+}
+
+.round-button-icon.active {
+  color: var(--primary) !important;
+}
+
+.round-button-icon svg,
+.round-button-icon svg * {
+  stroke: currentColor;
+  fill: currentColor;
+}
+
+.round-button-icon svg [fill="none"] {
+  fill: none !important;
+}
+
+/* 다크모드 색상 오버라이드 */
+.dark {
+  --background: #141415;
+  --foreground: #f5f5f5;
+  --card: rgba(255, 255, 255, 0.05);
+  --card-foreground: #f5f5f5;
+  --popover: rgba(255, 255, 255, 0.1);
+  --popover-foreground: #f5f5f5;
+  --primary-bg: rgba(79, 168, 216, 0.1);
+  --secondary: #254758;
+  --secondary-foreground: #f5f5f5;
+  --muted: #52525b;
+  --muted-foreground: #a1a1aa;
+  --accent: #3f3f46;
+  --accent-foreground: #f5f5f5;
+  --border: rgba(163, 163, 163, 0.2);
+  --input: rgba(82, 82, 91, 0.8);
+  --input-background: rgba(82, 82, 91, 0.5);
+  --switch-background: #52525b;
+  
+  /* 아바타 전용 색상 (투명도 없이 명확한 fill) */
+  --avatar-bg: #3f3f46;
+  --avatar-border: rgba(255, 255, 255, 0.25);
+  
+  /* 다크모드 글래스모피즘 효과 - 체계적인 설계 */
+  --glass-bg: rgba(245, 245, 245, 0.05);
+  --glass-border: rgba(163, 163, 163, 0.2);
+  --glass-text: #f5f5f5;
+  --glass-icon: #f5f5f5;
+  --glass-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  --glass-hover-bg: rgba(255, 255, 255, 0.08);
+  --glass-active-bg: rgba(255, 255, 255, 0.12);
+  
+  /* 다크모드 드롭다운 전용 스타일 */
+  --dropdown-bg: rgba(42, 42, 46, 0.98);
+  --dropdown-border: rgba(163, 163, 163, 0.3);
+  --dropdown-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.4);
+  
+  /* 다크모드 Input/Form 요소 스타일 */
+  --input-bg: rgba(82, 82, 91, 0.5);
+  --input-border: rgba(163, 163, 163, 0.3);
+  --input-shadow: none;
+  --input-focus-border: rgba(79, 168, 216, 0.8);
+  --input-focus-shadow: none;
+  
+  /* 다크모드 버튼 호버/액티브 스타일 */
+  --button-hover-bg: rgba(100, 100, 110, 0.6);
+  --button-hover-border: rgba(163, 163, 163, 0.45);
+  --button-hover-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.3);
+  --button-active-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);
+  
+  /* 다크모드 카드 스타일 */
+  --card-bg: rgba(82, 82, 91, 0.3);
+  --card-border: rgba(163, 163, 163, 0.2);
+  --card-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
+  --card-hover-shadow: 0px 6px 16px 0px rgba(0, 0, 0, 0.3);
+  
+  /* 다크모드 CloseButton 스타일 */
+  --close-btn-bg-start: rgba(255, 255, 255, 0.1);
+  --close-btn-bg-end: rgba(255, 255, 255, 0.05);
+  --close-btn-border: rgba(255, 255, 255, 0.2);
+  --close-btn-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  --close-btn-icon: #f5f5f5;
+  --close-btn-icon-hover: #4fa8d8;
+  
+  /* Member 배지 스타일 - 다크모드 */
+  --member-badge-bg: #254758;
+  --member-badge-border: #35a9dd;
+  --member-badge-text: #35a9dd;
+  
+  /* Agent 패널 스타일 - 다크모드 */
+  --agent-message-bg: rgba(82, 82, 91, 0.3);
+  --agent-user-message-bg: rgba(79, 168, 216, 0.2);
+  --history-item-bg: rgba(82, 82, 91, 0.3);
+  --comment-item-bg: rgba(79, 168, 216, 0.15);
+  --tab-active-gradient-start: rgba(255, 255, 255, 0);
+  --tab-active-gradient-end: rgba(255, 255, 255, 0.1);
+  --icon-fill: #f5f5f5;
+  
+  /* 폴더 스타일 탭 - 다크모드 */
+  --tab-active-bg: rgba(255, 255, 255, 0.08);
+  --tab-inactive-bg: rgba(255, 255, 255, 0.15);
+  --popover-bg: rgba(245, 245, 245, 0.05);
+  --popover-border: rgba(163, 163, 163, 0.2);
+  --popover-button-bg: rgba(255, 255, 255, 0.05);
+  --popover-button-border: rgba(255, 255, 255, 0.1);
+  --popover-button-hover-bg: rgba(255, 255, 255, 0.1);
+  --popover-button-hover-border: rgba(255, 255, 255, 0.2);
+  --popover-icon-bg: rgba(255, 255, 255, 0.1);
+  --popover-icon-hover-bg: rgba(255, 255, 255, 0.2);
+  --popover-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  
+  /* 노드 타입별 뱃지 색상 - 다크모드 */
+  --node-badge-text-bg: rgba(34, 197, 94, 0.2);
+  --node-badge-text-text: #4ade80;
+  --node-badge-image-bg: rgba(79, 168, 216, 0.2);
+  --node-badge-image-text: #60a5fa;
+  --node-badge-video-bg: rgba(168, 85, 247, 0.2);
+  --node-badge-video-text: #c084fc;
+  --node-badge-upload-bg: rgba(79, 168, 216, 0.2);
+  --node-badge-upload-text: #60a5fa;
+  --node-badge-process-bg: rgba(249, 115, 22, 0.2);
+  --node-badge-process-text: #fb923c;
+  --node-badge-mix-bg: rgba(236, 72, 153, 0.2);
+  --node-badge-mix-text: #f472b6;
+  --node-badge-composition-bg: rgba(147, 51, 234, 0.2);
+  --node-badge-composition-text: #a855f7;
+  
+  --sidebar: rgba(255, 255, 255, 0.05);
+  --sidebar-foreground: #f5f5f5;
+  --sidebar-accent: rgba(255, 255, 255, 0.1);
+  --sidebar-accent-foreground: #f5f5f5;
+  --sidebar-border: rgba(163, 163, 163, 0.2);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    font-size: var(--font-size);
+    font-family: var(--font-family);
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-family);
+    font-feature-settings: 'liga', 'kern';
+    font-optical-sizing: auto;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* 그라디언트 메시 배경 - 라이트/다크모드 대응 */
+.gradient-mesh {
+  position: relative;
+  background-color: var(--background);
+  /* 라이트모드 기본 그라디언트 - 직접 적용하여 Figma 복사 호환성 확보 */
+  background-image: 
+    radial-gradient(circle at 20% 20%, rgba(79,168,216,0.15) 0%, rgba(79,168,216,0.08) 25%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(150,200,230,0.12) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(200,220,240,0.08) 0%, transparent 50%);
+  background-size: 100% 100%;
+  background-position: 0 0;
+  background-repeat: no-repeat;
+}
+
+/* 다크모드 그라디언트 배경 - 피그마 디자인과 동일 */
+.dark .gradient-mesh {
+  background-image: 
+    radial-gradient(circle at 20% 20%, rgba(53,169,221,0.15) 0%, rgba(27,85,111,0.075) 25%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(37,71,88,0.15) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(63,63,70,0.1) 0%, transparent 50%);
+}
+
+/**
+ * Base typography. This is not applied to elements which have an ancestor with a Tailwind text class.
+ */
+@layer base {
+  :where(:not(:has([class*=" text-"]), :not(:has([class^="text-"])))) {
+    h1 {
+      font-size: var(--text-2xl);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    h2 {
+      font-size: var(--text-xl);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    h3 {
+      font-size: var(--text-lg);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    h4 {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    p {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-normal);
+      line-height: 1.5;
+    }
+
+    label {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    button {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    input {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-normal);
+      line-height: 1.5;
+    }
+  }
+}
+
+
+
+/* 글래스모피즘과 그라데이션 효과 */
+@layer components {
+  /* 라이트모드와 다크모드는 위쪽 섹션에서 이미 정의됨 - 중복 제거 */
+}
+
+/* 백드롭 필터 지원 확장 */
+@supports (backdrop-filter: blur(10px)) {
+  .backdrop-blur-glass {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
+/* 백드롭 필터 미지원 시 대체 스타일 */
+@supports not (backdrop-filter: blur(10px)) {
+  .backdrop-blur-glass {
+    background: var(--color-card) !important;
+  }
+}
+
+/* 테마별 추가 스타일 */
+@layer components {
+  /* 라이트모드 카드 그림자 */
+  .card-shadow {
+    box-shadow: 
+      0 1px 3px 0 rgba(0, 0, 0, 0.1), 
+      0 1px 2px 0 rgba(0, 0, 0, 0.06),
+      0 0 0 1px rgba(0, 0, 0, 0.05);
+  }
+  
+  /* 다크모드에서는 그림자 제거 */
+  .dark .card-shadow {
+    box-shadow: none;
+  }
+  
+  /* 라이트모드 강화된 테두리 */
+  .light-border {
+    border: 1px solid #e2e8f0;
+  }
+  
+  .dark .light-border {
+    border: 1px solid rgba(163, 163, 163, 0.2);
+  }
+  
+  /* 라이트모드 사이드바 그림자 */
+  .sidebar-shadow {
+    box-shadow: 2px 0 8px 0 rgba(0, 0, 0, 0.05);
+  }
+  
+  .dark .sidebar-shadow {
+    box-shadow: none;
+  }
+  
+  /* 라이트모드 버튼 그림자 */
+  .button-shadow {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  }
+  
+  .dark .button-shadow {
+    box-shadow: none;
+  }
+}
+
+/* 공통 UI 컴포넌트 스타일 */
+@layer components {
+  /* 44px 최소 터치 타겟을 위한 버튼 기본 스타일 */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* 공통 인터랙션 효과 */
+  .interactive {
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .interactive:hover {
+    transform: translateY(-1px);
+  }
+  
+  .interactive:active {
+    transform: translateY(0);
+  }
+  
+  /* 일관된 포커스 스타일 */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2;
+  }
+}
+
+/* 767px 이하 모바일 최적화 */
+@media (max-width: 767px) {
+  .mobile-compact {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+  }
+  
+  .mobile-compact-logo {
+    height: 1.25rem !important; /* h-5 */
+    margin: 2px 0 !important;
+  }
+  
+  .mobile-compact-container {
+    padding-top: 60px !important; /* 헤더 높이 */
+    min-height: 100vh !important;
+    min-height: 100svh !important; /* 모바일 안전 영역 고려 */
+  }
+  
+  /* 모바일 헤더 높이 고정 */
+  .mobile-header {
+    height: 60px !important;
+  }
+}
+
+/* Toast/알람 모달 스타일 */
+@layer components {
+  /* Toast 컨테이너 스타일 */
+  .toaster {
+    font-family: var(--font-family) !important;
+  }
+
+  /* Toast 글라스모피즘 배경 - Info (파란색) */
+  .toast-glass-info {
+    background: linear-gradient(135deg, rgba(79, 168, 216, 0.85) 0%, rgba(79, 168, 216, 0.75) 100%) !important;
+    border-color: rgba(79, 168, 216, 0.6) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    box-shadow: 0 8px 20px rgba(79, 168, 216, 0.3), 0 0 0 1px rgba(79, 168, 216, 0.2) inset, 0 1px 0 rgba(255, 255, 255, 0.3) inset !important;
+    color: rgba(255, 255, 255, 0.95) !important;
+  }
+
+  .dark .toast-glass-info {
+    background: linear-gradient(135deg, rgba(79, 168, 216, 0.75) 0%, rgba(79, 168, 216, 0.65) 100%) !important;
+    border-color: rgba(79, 168, 216, 0.5) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(79, 168, 216, 0.3) inset, 0 1px 0 rgba(255, 255, 255, 0.1) inset !important;
+    color: rgba(255, 255, 255, 0.95) !important;
+  }
+
+  /* Toast 글라스모피즘 배경 - Success (녹색) */
+  .toast-glass-success {
+    background: linear-gradient(135deg, rgba(74, 222, 128, 0.85) 0%, rgba(74, 222, 128, 0.75) 100%) !important;
+    border-color: rgba(74, 222, 128, 0.6) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    box-shadow: 0 8px 20px rgba(74, 222, 128, 0.3), 0 0 0 1px rgba(74, 222, 128, 0.2) inset, 0 1px 0 rgba(255, 255, 255, 0.3) inset !important;
+    color: rgba(255, 255, 255, 0.95) !important;
+  }
+
+  .dark .toast-glass-success {
+    background: linear-gradient(135deg, rgba(74, 222, 128, 0.75) 0%, rgba(74, 222, 128, 0.65) 100%) !important;
+    border-color: rgba(74, 222, 128, 0.5) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(74, 222, 128, 0.3) inset, 0 1px 0 rgba(255, 255, 255, 0.1) inset !important;
+    color: rgba(255, 255, 255, 0.95) !important;
+  }
+
+  /* Toast 글라스모피즘 배경 - Error (빨간색) */
+  .toast-glass-error {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.85) 0%, rgba(239, 68, 68, 0.75) 100%) !important;
+    border-color: rgba(239, 68, 68, 0.6) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3), 0 0 0 1px rgba(239, 68, 68, 0.2) inset, 0 1px 0 rgba(255, 255, 255, 0.3) inset !important;
+    color: rgba(255, 255, 255, 0.95) !important;
+  }
+
+  .dark .toast-glass-error {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.75) 0%, rgba(239, 68, 68, 0.65) 100%) !important;
+    border-color: rgba(239, 68, 68, 0.5) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(239, 68, 68, 0.3) inset, 0 1px 0 rgba(255, 255, 255, 0.1) inset !important;
+    color: rgba(255, 255, 255, 0.95) !important;
+  }
+
+  /* Toast 글라스모피즘 배경 - Warning (주황색) */
+  .toast-glass-warning {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.85) 0%, rgba(245, 158, 11, 0.75) 100%) !important;
+    border-color: rgba(245, 158, 11, 0.6) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3), 0 0 0 1px rgba(245, 158, 11, 0.2) inset, 0 1px 0 rgba(255, 255, 255, 0.3) inset !important;
+    color: rgba(255, 255, 255, 0.95) !important;
+  }
+
+  .dark .toast-glass-warning {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.75) 0%, rgba(245, 158, 11, 0.65) 100%) !important;
+    border-color: rgba(245, 158, 11, 0.5) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(245, 158, 11, 0.3) inset, 0 1px 0 rgba(255, 255, 255, 0.1) inset !important;
+    color: rgba(255, 255, 255, 0.95) !important;
+  }
+
+  /* Toast 아이콘 여백 제거 (flex gap으로 대체) */
+  .toaster [data-icon] {
+    flex-shrink: 0;
+    margin: 0 !important;
+  }
+
+  /* Toast 제목 스타일 */
+  .toaster [data-title] {
+    font-weight: 500 !important;
+    line-height: 1.4 !important;
+    margin: 0 !important;
+    color: rgba(255, 255, 255, 0.95) !important;
+  }
+
+  /* Toast 설명 스타일 - description이 있을 때만 표시 */
+  .toaster [data-description] {
+    margin-top: 4px !important;
+    line-height: 1.4 !important;
+    color: rgba(255, 255, 255, 0.85) !important;
+  }
+
+  /* description이 없으면 여백 제거 */
+  .toaster [data-description]:empty {
+    display: none !important;
+    margin: 0 !important;
+  }
+
+  /* Toast 간격 조정 */
+  .toaster [data-sonner-toaster] {
+    gap: 8px !important;
+  }
+
+  /* Toast 애니메이션 */
+  .toaster [data-sonner-toast] {
+    animation: toast-slide-in 0.2s ease-out !important;
+  }
+
+  @keyframes toast-slide-in {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+}

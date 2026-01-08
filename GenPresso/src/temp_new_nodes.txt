@@ -1,0 +1,77 @@
+    // ===== ROW 1: Y = 100-500 =====
+    
+    // GROUP 1 - Interior Design (Column 1: X = 100-600, Yellow)
+    { id: 'node-1', type: 'text', content: '모던 거실 디자인', prompt: 'Modern living room design', x: 100, y: 150, isOutput: false, metadata: { model: 'flux-pro' } },
+    { id: 'node-2', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800', prompt: 'Living room 1', x: 350, y: 100, metadata: { model: 'flux-pro', ratio: '16:9' } },
+    { id: 'node-3', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800', prompt: 'Living room 2', x: 350, y: 320, metadata: { model: 'flux-pro', ratio: '16:9' } },
+    { id: 'node-4', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=800', prompt: 'Final composition', x: 550, y: 210, metadata: { model: 'flux-pro', ratio: '16:9' } },
+    
+    // GROUP 2 - Product Design (Column 2: X = 800-1300, Blue)
+    { id: 'node-5', type: 'text', content: '제품 디자인', prompt: 'Product design', x: 800, y: 150, isOutput: false, metadata: { model: 'midjourney-v6' } },
+    { id: 'node-6', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800', prompt: 'Product 1', x: 1050, y: 100, metadata: { model: 'midjourney-v6', ratio: '1:1' } },
+    { id: 'node-7', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1592286927505-e7d50b3dc4f4?w=800', prompt: 'Product 2', x: 1050, y: 320, metadata: { model: 'midjourney-v6', ratio: '1:1' } },
+    { id: 'node-8', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1605236453806-6ff36851218e?w=800', prompt: 'Final product', x: 1250, y: 210, metadata: { model: 'midjourney-v6', ratio: '16:9' } },
+    
+    // GROUP 3 - Nature Scenes (Column 3: X = 1500-2000, Pink)
+    { id: 'node-9', type: 'text', content: '자연 풍경', prompt: 'Nature landscapes', x: 1500, y: 150, isOutput: false, metadata: { model: 'dall-e-3' } },
+    { id: 'node-10', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800', prompt: 'Mountain', x: 1750, y: 100, metadata: { model: 'dall-e-3', ratio: '16:9' } },
+    { id: 'node-11', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=800', prompt: 'Ocean', x: 1750, y: 320, metadata: { model: 'dall-e-3', ratio: '16:9' } },
+    { id: 'node-12', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?w=800', prompt: 'Forest', x: 1950, y: 210, metadata: { model: 'dall-e-3', ratio: '16:9' } },
+    
+    // GROUP 4 - Architecture (Column 4: X = 2200-2700, Green)
+    { id: 'node-13', type: 'text', content: '건축 디자인', prompt: 'Architecture', x: 2200, y: 150, isOutput: false, metadata: { model: 'stable-diffusion-xl' } },
+    { id: 'node-14', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=800', prompt: 'Building 1', x: 2450, y: 100, metadata: { model: 'stable-diffusion-xl', ratio: '16:9' } },
+    { id: 'node-15', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800', prompt: 'Building 2', x: 2450, y: 320, metadata: { model: 'stable-diffusion-xl', ratio: '16:9' } },
+    { id: 'node-16', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1554793000-245d3a3c2a51?w=800', prompt: 'Bridge', x: 2650, y: 210, metadata: { model: 'stable-diffusion-xl', ratio: '16:9' } },
+    
+    // ===== ROW 2: Y = 700-1100 =====
+    
+    // GROUP 5 - Food Photography (Column 1: X = 100-600, Purple)
+    { id: 'node-17', type: 'text', content: '음식 사진', prompt: 'Food photography', x: 100, y: 750, isOutput: false, metadata: { model: 'flux-pro' } },
+    { id: 'node-18', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=800', prompt: 'Dish 1', x: 350, y: 700, metadata: { model: 'flux-pro', ratio: '1:1' } },
+    { id: 'node-19', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=800', prompt: 'Dish 2', x: 350, y: 920, metadata: { model: 'flux-pro', ratio: '1:1' } },
+    { id: 'node-20', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1514066558159-fc8c737ef259?w=800', prompt: 'Final plating', x: 550, y: 810, metadata: { model: 'flux-pro', ratio: '16:9' } },
+    
+    // GROUP 6 - Tech & AI (Column 2: X = 800-1300, Orange)
+    { id: 'node-21', type: 'text', content: 'AI 기술', prompt: 'AI technology', x: 800, y: 750, isOutput: false, metadata: { model: 'midjourney-v6' } },
+    { id: 'node-22', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800', prompt: 'Robot', x: 1050, y: 700, metadata: { model: 'midjourney-v6', ratio: '1:1' } },
+    { id: 'node-23', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800', prompt: 'Hologram', x: 1050, y: 920, metadata: { model: 'midjourney-v6', ratio: '1:1' } },
+    { id: 'node-24', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1535223289827-42f1e9919769?w=800', prompt: 'Final scene', x: 1250, y: 810, metadata: { model: 'midjourney-v6', ratio: '16:9' } },
+    
+    // GROUP 7 - Abstract Art (Column 3: X = 1500-2000, Yellow)
+    { id: 'node-25', type: 'text', content: '추상 아트', prompt: 'Abstract art', x: 1500, y: 750, isOutput: false, metadata: { model: 'dall-e-3' } },
+    { id: 'node-26', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1557672172-298e090bd0f1?w=800', prompt: 'Geometric', x: 1750, y: 700, metadata: { model: 'dall-e-3', ratio: '1:1' } },
+    { id: 'node-27', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=800', prompt: 'Color splash', x: 1750, y: 920, metadata: { model: 'dall-e-3', ratio: '1:1' } },
+    { id: 'node-28', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=800', prompt: 'Fluid', x: 1950, y: 810, metadata: { model: 'dall-e-3', ratio: '1:1' } },
+    
+    // GROUP 8 - Wildlife (Column 4: X = 2200-2700, Blue)
+    { id: 'node-29', type: 'text', content: '야생동물', prompt: 'Wildlife', x: 2200, y: 750, isOutput: false, metadata: { model: 'stable-diffusion-xl' } },
+    { id: 'node-30', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1602491453631-e2a5ad90a131?w=800', prompt: 'Tiger', x: 2450, y: 700, metadata: { model: 'stable-diffusion-xl', ratio: '16:9' } },
+    { id: 'node-31', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1552728089-57bdde30beb3?w=800', prompt: 'Eagle', x: 2450, y: 920, metadata: { model: 'stable-diffusion-xl', ratio: '16:9' } },
+    { id: 'node-32', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800', prompt: 'Dolphin', x: 2650, y: 810, metadata: { model: 'stable-diffusion-xl', ratio: '16:9' } },
+    
+    // ===== ROW 3: Y = 1300-1700 =====
+    
+    // GROUP 9 - Fashion (Column 1: X = 100-600, Pink)
+    { id: 'node-33', type: 'text', content: '패션', prompt: 'Fashion', x: 100, y: 1350, isOutput: false, metadata: { model: 'flux-pro' } },
+    { id: 'node-34', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800', prompt: 'Haute couture', x: 350, y: 1300, metadata: { model: 'flux-pro', ratio: '9:16' } },
+    { id: 'node-35', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800', prompt: 'Accessories', x: 350, y: 1520, metadata: { model: 'flux-pro', ratio: '1:1' } },
+    { id: 'node-36', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800', prompt: 'Editorial', x: 550, y: 1410, metadata: { model: 'flux-pro', ratio: '16:9' } },
+    
+    // GROUP 10 - Space (Column 2: X = 800-1300, Green)
+    { id: 'node-37', type: 'text', content: '우주', prompt: 'Space', x: 800, y: 1350, isOutput: false, metadata: { model: 'midjourney-v6' } },
+    { id: 'node-38', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?w=800', prompt: 'Galaxy', x: 1050, y: 1300, metadata: { model: 'midjourney-v6', ratio: '16:9' } },
+    { id: 'node-39', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1614732414444-096e5f1122d5?w=800', prompt: 'Planet', x: 1050, y: 1520, metadata: { model: 'midjourney-v6', ratio: '1:1' } },
+    { id: 'node-40', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=800', prompt: 'Nebula', x: 1250, y: 1410, metadata: { model: 'midjourney-v6', ratio: '16:9' } },
+    
+    // GROUP 11 - Sports (Column 3: X = 1500-2000, Purple)
+    { id: 'node-41', type: 'text', content: '스포츠', prompt: 'Sports', x: 1500, y: 1350, isOutput: false, metadata: { model: 'flux-pro' } },
+    { id: 'node-42', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=800', prompt: 'Surfing', x: 1750, y: 1300, metadata: { model: 'flux-pro', ratio: '16:9' } },
+    { id: 'node-43', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1541625602330-2277a4c46182?w=800', prompt: 'Biking', x: 1750, y: 1520, metadata: { model: 'flux-pro', ratio: '16:9' } },
+    { id: 'node-44', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800', prompt: 'Collage', x: 1950, y: 1410, metadata: { model: 'flux-pro', ratio: '16:9' } },
+    
+    // GROUP 12 - Urban Life (Column 4: X = 2200-2700, Orange)
+    { id: 'node-45', type: 'text', content: '도시', prompt: 'Urban', x: 2200, y: 1350, isOutput: false, metadata: { model: 'dall-e-3' } },
+    { id: 'node-46', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800', prompt: 'Cityscape', x: 2450, y: 1300, metadata: { model: 'dall-e-3', ratio: '16:9' } },
+    { id: 'node-47', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=800', prompt: 'Street', x: 2450, y: 1520, metadata: { model: 'dall-e-3', ratio: '1:1' } },
+    { id: 'node-48', type: 'image', imageUrl: 'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?w=800', prompt: 'Night scene', x: 2650, y: 1410, metadata: { model: 'dall-e-3', ratio: '16:9' } },
