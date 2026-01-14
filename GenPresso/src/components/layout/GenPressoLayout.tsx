@@ -6,6 +6,7 @@ import {
   ChevronRight,
   ChevronLeft,
   Languages,
+  ArrowUp,
 } from "lucide-react";
 import { SystemButton } from "../ui/system-button";
 import { RoundButton } from "../ui/round-button";
@@ -32,6 +33,7 @@ import {
 import { MobileGlassLayout } from "./MobileGlassLayout";
 import { DesktopGlassLayout } from "./DesktopGlassLayout";
 import { MemberSection } from "../canvas/MemberSection";
+import { ShareButton } from "../canvas/ShareButton";
 import { ProjectNameInput } from "../canvas/ProjectNameInput";
 import Click from "../../imports/Click";
 import { useIsMobile } from "../ui/use-mobile";
@@ -66,18 +68,24 @@ import { CanvasThumbnail } from "../canvas/CanvasThumbnail";
 import { GalleryDetailDialog } from "./GalleryDetailDialog";
 import { continueProjects, exploreItems } from "../../data/mock-projects";
 import { ProfileOnboardingDialog } from "../onboarding/ProfileOnboardingDialog";
+import { AgentSettingsDialog } from "../agent/AgentSettingsDialog";
+import { ModelSelectionDialog } from "../forms/ModelSelectionDialog";
 
 // 모바일 헤더 컴포넌트
 const MobileHeader = memo(function MobileHeader({ 
   onLogoClick,
   isNotificationOpen,
   setIsNotificationOpen,
-  onNavigate
+  onNavigate,
+  isAgentSettingsOpen,
+  setIsAgentSettingsOpen
 }: { 
   onLogoClick?: () => void;
   isNotificationOpen: boolean;
   setIsNotificationOpen: (open: boolean) => void;
   onNavigate: (page: 'main' | 'canvas' | 'settings' | 'projects' | 'favorites' | 'dashboard') => void;
+  isAgentSettingsOpen: boolean;
+  setIsAgentSettingsOpen: (open: boolean) => void;
 }) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isAgentDrawerOpen, setIsAgentDrawerOpen] = useState(false);
@@ -118,7 +126,7 @@ const MobileHeader = memo(function MobileHeader({
           <GenPressoLogo size="small" onClick={onLogoClick} />
         </div>
 
-        {/* 에이전트 버튼 - 우측 (햄버거와 대칭) */}
+        {/* 에이전�� 버튼 - 우측 (햄버거와 대칭) */}
         <Drawer open={isAgentDrawerOpen} onOpenChange={setIsAgentDrawerOpen} direction="right">
           <DrawerTrigger asChild>
             <div className="p-2">
@@ -306,6 +314,8 @@ const MainContent = memo(function MainContent({ onNavigateToCanvas, onLogoClick,
   const [displayCount, setDisplayCount] = useState(getDisplayItemCount());
   const [inputValue, setInputValue] = useState("");
   const [isMultiLine, setIsMultiLine] = useState(false);
+  const [isAgentSettingsOpen, setIsAgentSettingsOpen] = useState(false);
+  const [isModelSelectionOpen, setIsModelSelectionOpen] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [bookmarkedItems, setBookmarkedItems] = useState<Set<string>>(new Set(['p1', 'p3', 'p6', 'p8'])); // 초기 북마크 (8개 시나리오)
   const [likedItems, setLikedItems] = useState<Set<string>>(new Set());
@@ -324,8 +334,10 @@ const MainContent = memo(function MainContent({ onNavigateToCanvas, onLogoClick,
       textareaRef.current.style.height = 'auto';
       const scrollHeight = textareaRef.current.scrollHeight;
       
-      // 한 줄 높이(약 40-42px)보다 크면 멀티라인으로 간주
-      setIsMultiLine(scrollHeight > 45);
+      // lineHeight 1.6 기준으로 줄 수 계산 (더 정확한 감지)
+      // text-sm(14px) * 1.6 = 22.4px, text-base(16px) * 1.6 = 25.6px
+      // 한 줄: ~25px, 두 줄: ~50px → 기준을 35px로 낮춤
+      setIsMultiLine(scrollHeight > 35);
 
       // Limit max height to roughly 5 lines (approx 24px * 5 = 120px)
       textareaRef.current.style.height = `${Math.min(scrollHeight, 120)}px`;
@@ -696,14 +708,8 @@ const MainContent = memo(function MainContent({ onNavigateToCanvas, onLogoClick,
           {/* 생성 입창 */}
           <div className="md:mb-8 mx-[0px] my-[15px]">
             <div className="w-full max-w-2xl 2xl:max-w-4xl mx-auto my-[42px] px-4 flex items-end gap-2">
-              <div className="shrink-0 pb-1.5">
-                <FileAttachPopover 
-                  buttonClassName="!w-11 !h-11 !rounded-full !bg-[var(--glass-bg)] !border-[0.726px] !border-[var(--glass-border)] hover:!bg-[var(--glass-hover-bg)] !text-[var(--glass-icon)] !shadow-[var(--glass-shadow)] transition-colors backdrop-blur-md"
-                />
-              </div>
-
               <div 
-                className={`flex-1 relative border-[0.5px] border-solid ${isMultiLine ? 'rounded-[28px]' : 'rounded-full'} pl-5 pr-2 py-1.5 transition-all duration-200 flex items-end gap-2`}
+                className={`flex-1 relative border-[0.5px] border-solid ${isMultiLine ? 'rounded-[28px]' : 'rounded-full'} px-1.5 py-1.5 transition-all duration-200 flex items-center gap-1.5`}
                 style={{
                   backgroundColor: 'var(--color-glass-bg)',
                   backdropFilter: 'blur(var(--blur-glass))',
@@ -712,27 +718,136 @@ const MainContent = memo(function MainContent({ onNavigateToCanvas, onLogoClick,
                   boxShadow: 'var(--glass-shadow)',
                 }}
               >
+                {/* 입력창 내부 좌측: 파일첨부, 설정, 모델 선택 버튼 */}
+                <div className="shrink-0 flex items-center gap-0 self-end">
+                  {/* 파일 첨부 버튼 */}
+                  <div className="relative group/attach">
+                    <FileAttachPopover 
+                      buttonClassName="!bg-transparent hover:!bg-[var(--glass-hover-bg)] !border-0 !shadow-none"
+                      showLabel={false}
+                    />
+                    {/* 툴팁 */}
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover/attach:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
+                      <div className="px-2 py-1 rounded-md text-xs whitespace-nowrap" style={{
+                        backgroundColor: 'var(--tooltip-bg)',
+                        border: '0.5px solid var(--tooltip-border)',
+                        backdropFilter: 'blur(var(--tooltip-backdrop))',
+                        WebkitBackdropFilter: 'blur(var(--tooltip-backdrop))',
+                        boxShadow: 'var(--tooltip-shadow)'
+                      }}>
+                        {t('upload.attachFile')}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* 설정 버튼 */}
+                  <div className="relative group/settings">
+                    <button
+                      className="w-7 h-7 rounded-full flex items-center justify-center transition-colors"
+                      style={{
+                        backgroundColor: 'transparent',
+                        color: 'var(--glass-icon)',
+                      }}
+                      onMouseEnter={(e) => {
+                        const btn = e.currentTarget;
+                        btn.style.backgroundColor = 'var(--glass-hover-bg)';
+                      }}
+                      onMouseLeave={(e) => {
+                        const btn = e.currentTarget;
+                        btn.style.backgroundColor = 'transparent';
+                      }}
+                      onClick={() => setIsAgentSettingsOpen(true)}
+                      aria-label={t('agent.settings')}
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                    </button>
+                    {/* 툴팁 */}
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover/settings:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
+                      <div className="px-2 py-1 rounded-md text-xs whitespace-nowrap" style={{
+                        backgroundColor: 'var(--tooltip-bg)',
+                        border: '0.5px solid var(--tooltip-border)',
+                        backdropFilter: 'blur(var(--tooltip-backdrop))',
+                        WebkitBackdropFilter: 'blur(var(--tooltip-backdrop))',
+                        boxShadow: 'var(--tooltip-shadow)'
+                      }}>
+                        {t('agent.settings')}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* 모델 선택 버튼 */}
+                  <div className="relative group/model">
+                    <button
+                      className="w-7 h-7 rounded-full flex items-center justify-center transition-colors"
+                      style={{
+                        backgroundColor: 'transparent',
+                        color: 'var(--glass-icon)',
+                      }}
+                      onMouseEnter={(e) => {
+                        const btn = e.currentTarget;
+                        btn.style.backgroundColor = 'var(--glass-hover-bg)';
+                      }}
+                      onMouseLeave={(e) => {
+                        const btn = e.currentTarget;
+                        btn.style.backgroundColor = 'transparent';
+                      }}
+                      onClick={() => setIsModelSelectionOpen(true)}
+                      aria-label={t('agent.modelSelection')}
+                    >
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <circle cx="6" cy="6" r="2" />
+                        <circle cx="6" cy="12" r="2" />
+                        <circle cx="6" cy="18" r="2" />
+                        <circle cx="12" cy="6" r="2" />
+                        <circle cx="12" cy="12" r="2" />
+                        <circle cx="12" cy="18" r="2" />
+                        <circle cx="18" cy="6" r="2" />
+                        <circle cx="18" cy="12" r="2" />
+                        <circle cx="18" cy="18" r="2" />
+                      </svg>
+                    </button>
+                    {/* 툴팁 */}
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover/model:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
+                      <div className="px-2 py-1 rounded-md text-xs whitespace-nowrap" style={{
+                        backgroundColor: 'var(--tooltip-bg)',
+                        border: '0.5px solid var(--tooltip-border)',
+                        backdropFilter: 'blur(var(--tooltip-backdrop))',
+                        WebkitBackdropFilter: 'blur(var(--tooltip-backdrop))',
+                        boxShadow: 'var(--tooltip-shadow)'
+                      }}>
+                        {t('agent.modelSelection')}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 텍스트 입력 */}
                 <textarea
                   ref={textareaRef}
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyDown={handleKeyPress}
                   placeholder={t('common.workWithAgent')}
-                  className="flex-1 bg-transparent text-foreground placeholder:text-muted-foreground focus:outline-none text-sm md:text-base min-w-0 m-0 px-0 py-2 resize-none max-h-[120px] overflow-y-auto"
+                  className="flex-1 bg-transparent text-foreground placeholder:text-muted-foreground focus:outline-none text-sm md:text-base min-w-0 resize-none overflow-y-auto py-0"
                   rows={1}
-                  style={{ lineHeight: '1.5' }}
+                  style={{ lineHeight: '1.6', maxHeight: '120px' }}
                 />
+
+                {/* Generate button (Circular Black Button) */}
                 <Button 
                   size="icon"
-                  className="shrink-0 rounded-full !h-10 !w-10 bg-primary text-primary-foreground hover:bg-primary/90 flex items-center justify-center p-0 transition-all duration-200 shadow-sm"
+                  className="shrink-0 rounded-full !h-8 !w-8 bg-primary text-primary-foreground hover:bg-primary/90 flex items-center justify-center p-0 transition-all duration-200 shadow-sm self-end"
                   onClick={handleCreateNew}
+                  aria-label={t('common.generate')}
+                  type="submit"
                 >
-                  <IconSparkles 
-                    size={18} 
-                    className="text-primary-foreground"
-                    color="currentColor"
+                  <ArrowUp 
+                    strokeWidth={2.5}
+                    className="w-5 h-5 text-primary-foreground"
                   />
-                  <span className="sr-only">{t('common.generate')}</span>
                 </Button>
               </div>
             </div>
@@ -1069,6 +1184,18 @@ const MainContent = memo(function MainContent({ onNavigateToCanvas, onLogoClick,
         item={selectedGalleryItem}
         onDuplicate={handleDuplicateGalleryItem}
       />
+
+      {/* 에이전트 설정 Dialog */}
+      <AgentSettingsDialog
+        isOpen={isAgentSettingsOpen}
+        onClose={() => setIsAgentSettingsOpen(false)}
+      />
+
+      {/* 모델 선택 Dialog */}
+      <ModelSelectionDialog
+        isOpen={isModelSelectionOpen}
+        onClose={() => setIsModelSelectionOpen(false)}
+      />
     </div>
   );
 });
@@ -1090,6 +1217,9 @@ export default function GenPressoLayout() {
   const [currentScenario, setCurrentScenario] = useState<string | null>(null); // 현재 시나리오 ID
   const isMobile = useIsMobile(); // 모바일 여부 확인
   const [showOnboarding, setShowOnboarding] = useState(false); // 온보딩 팝업 상태
+  const [selectedNodeCount, setSelectedNodeCount] = useState(0); // 선택된 노드 개수
+  const [isAgentSettingsOpen, setIsAgentSettingsOpen] = useState(false); // 에이전트 설정 Dialog 상태
+  const [isModelSelectionOpen, setIsModelSelectionOpen] = useState(false); // 모델 선택 Dialog 상태
 
   // 로그인 후 온보딩 체크
   useEffect(() => {
@@ -1104,6 +1234,15 @@ export default function GenPressoLayout() {
   // 유연한 네비게이션 함수
   const navigateToLevel = (targetLevel: 0 | 1 | 2) => {
     setSidebarExpansionLevel(targetLevel);
+  };
+
+  // 로그아웃 핸들러
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setSidebarExpansionLevel(0);
+    setCurrentPage('main');
+    setIsAgentDrawerOpen(false);
+    setIsHelpOpen(false);
   };
 
   // 캔버스로 이동 (시나리오 지정 가능)
@@ -1231,7 +1370,7 @@ export default function GenPressoLayout() {
         <>
       {/* 데스크톱 헤더 - 항상 표시 */}
       <header 
-        className="hidden md:flex fixed top-0 left-0 right-0 px-2.5"
+        className="hidden md:flex fixed top-0 left-0 right-0 px-2.5 py-1.5"
         style={{ 
           zIndex: Z_INDEX.HEADER,
           height: `${HEADER.HEIGHT}px`
@@ -1243,6 +1382,7 @@ export default function GenPressoLayout() {
             <HeaderLogoSection 
               logoSize="small" 
               onLogoClick={navigateToMain}
+              showCanvas={showCanvas}
             />
             {showCanvas && (
               <ProjectNameInput 
@@ -1252,10 +1392,26 @@ export default function GenPressoLayout() {
               />
             )}
           </div>
-          {/* 오른쪽: 멤버 섹션 (캔버스 모드) + 크레딧 버튼 */}
-          <div className="flex items-center gap-3">
-            {showCanvas && <MemberSection />}
-            <CreditButton />
+          {/* 오른쪽: 멤버 섹션 (캔버스 모드) + 공유 버튼 + 크레딧 버튼 - 3개 독립 div */}
+          <div className="flex items-center gap-1.5">
+            {/* 1. 멤버 섹션 */}
+            {showCanvas && (
+              <div>
+                <MemberSection />
+              </div>
+            )}
+            
+            {/* 2. 공유 버튼 */}
+            {showCanvas && (
+              <div>
+                <ShareButton />
+              </div>
+            )}
+            
+            {/* 3. 크레딧 버튼 */}
+            <div>
+              <CreditButton />
+            </div>
           </div>
         </div>
       </header>
@@ -1266,6 +1422,8 @@ export default function GenPressoLayout() {
         isNotificationOpen={isNotificationOpen}
         setIsNotificationOpen={setIsNotificationOpen}
         onNavigate={setCurrentPage}
+        isAgentSettingsOpen={isAgentSettingsOpen}
+        setIsAgentSettingsOpen={setIsAgentSettingsOpen}
       />
 
       {/* 사이드바 - 데스크톱에서만 표시, 항상 렌더링 */}
@@ -1279,6 +1437,7 @@ export default function GenPressoLayout() {
           onFavoritesClick={navigateToFavorites}
           onDashboardClick={navigateToDashboard}
           onViewAllClick={navigateToViewAll}
+          onLogout={handleLogout}
         />
       </div>
 
@@ -1480,12 +1639,12 @@ export default function GenPressoLayout() {
           <main 
             className="h-screen overflow-hidden hidden md:block relative"
           >
-            <CanvasWorkspace onBack={navigateToMain} scenarioId={currentScenario} />
+            <CanvasWorkspace onBack={navigateToMain} scenarioId={currentScenario} onSelectedNodeCountChange={setSelectedNodeCount} />
           </main>
 
           {/* 캔버스 - 모바일 (스크롤 없이 고정) */}
           <main className="md:hidden block h-screen overflow-hidden relative">
-            <CanvasWorkspace onBack={navigateToMain} scenarioId={currentScenario} />
+            <CanvasWorkspace onBack={navigateToMain} scenarioId={currentScenario} onSelectedNodeCountChange={setSelectedNodeCount} />
           </main>
         </>
       )}
@@ -1505,6 +1664,18 @@ export default function GenPressoLayout() {
       <ProfileOnboardingDialog 
         isOpen={showOnboarding} 
         onClose={() => setShowOnboarding(false)} 
+      />
+
+      {/* 에이전트 설정 Dialog */}
+      <AgentSettingsDialog
+        isOpen={isAgentSettingsOpen}
+        onClose={() => setIsAgentSettingsOpen(false)}
+      />
+
+      {/* 모델 선택 Dialog */}
+      <ModelSelectionDialog
+        isOpen={isModelSelectionOpen}
+        onClose={() => setIsModelSelectionOpen(false)}
       />
         </>
       )}

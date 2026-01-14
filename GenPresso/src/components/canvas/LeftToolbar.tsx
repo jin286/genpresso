@@ -259,14 +259,14 @@ function LeftToolbar({
           cursor: isDragging ? 'grabbing' : 'default',
         }}
       >
-        {/* 드래그 핸들 - 툴바 외부 우측 중앙, 호버 시만 표시 */}
+        {/* 드래그 핸들 - 툴바 외부 좌측 중앙, 호버 시만 표시 */}
         <div 
-          className="absolute -right-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 cursor-grab active:cursor-grabbing z-10"
+          className="absolute -left-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 cursor-grab active:cursor-grabbing z-10"
           onMouseDown={handleDragStart}
           onContextMenu={handleContextMenu}
           title={t('canvas.tools.dragToMove')}
         >
-          <div className="bg-muted-foreground/20 hover:bg-muted-foreground/30 rounded-full px-0.5 py-1.5 backdrop-blur-sm">
+          <div className="bg-muted-foreground/20 hover:bg-muted-foreground/30 rounded-full px-px py-1 backdrop-blur-sm transition-colors">
             <MoreVertical className="w-4 h-4 text-muted-foreground" />
           </div>
         </div>
@@ -282,7 +282,7 @@ function LeftToolbar({
               <Popover key={tool.id} open={isNodePopoverOpen} onOpenChange={handleNodePopoverChange}>
                 <PopoverTrigger asChild>
                   <button
-                    className={`flex flex-col items-center justify-center gap-1 ${isCompact ? 'w-11 h-11' : 'w-12 h-14'} p-0.5 rounded-lg transition-all duration-200 hover:bg-secondary/10 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
+                    className={`group/btn relative flex flex-col items-center justify-center gap-1 ${isCompact ? 'w-11 h-11' : 'w-12 h-14'} p-0.5 rounded-lg transition-all duration-200 hover:bg-secondary/10 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
                       activeTool === tool.id ? 'bg-secondary' : ''
                     }`}
                     aria-label={typeof tool.label === 'string' ? tool.label : '도구'}
@@ -297,6 +297,21 @@ function LeftToolbar({
                       <span className={`text-xs text-center leading-tight ${activeTool === tool.id ? 'text-primary' : ''}`}>
                         {(tool as any).labelElement || tool.label}
                       </span>
+                    )}
+                    
+                    {/* 축소형일 때 우측 툴팁 */}
+                    {isCompact && (
+                      <div className="absolute left-full ml-2 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
+                        <div className="px-2 py-1 rounded-md text-xs whitespace-nowrap" style={{
+                          backgroundColor: 'var(--tooltip-bg)',
+                          border: '0.5px solid var(--tooltip-border)',
+                          backdropFilter: 'blur(var(--tooltip-backdrop))',
+                          WebkitBackdropFilter: 'blur(var(--tooltip-backdrop))',
+                          boxShadow: 'var(--tooltip-shadow)'
+                        }}>
+                          {tool.label}
+                        </div>
+                      </div>
                     )}
                   </button>
                 </PopoverTrigger>
@@ -331,9 +346,10 @@ function LeftToolbar({
           }
 
           return (
+            tool.id !== 'explore' && tool.id !== 'hand' && tool.id !== 'select' ? (
             <button
               key={tool.id}
-              className={`flex flex-col items-center justify-center gap-1 ${isCompact ? 'w-11 h-11' : 'w-12 h-14'} p-0.5 rounded-lg transition-all duration-200 hover:bg-secondary/10 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
+              className={`group/btn relative flex flex-col items-center justify-center gap-1 ${isCompact ? 'w-11 h-11' : 'w-12 h-14'} p-0.5 rounded-lg transition-all duration-200 hover:bg-secondary/10 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
                 activeTool === tool.id ? 'bg-secondary' : ''
               }`}
               onClick={() => handleToolClick(tool.id)}
@@ -350,7 +366,23 @@ function LeftToolbar({
                   {(tool as any).labelElement || tool.label}
                 </span>
               )}
+              
+              {/* 축소형일 때 우측 툴팁 */}
+              {isCompact && (
+                <div className="absolute left-full ml-2 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
+                  <div className="px-2 py-1 rounded-md text-xs whitespace-nowrap" style={{
+                    backgroundColor: 'var(--tooltip-bg)',
+                    border: '0.5px solid var(--tooltip-border)',
+                    backdropFilter: 'blur(var(--tooltip-backdrop))',
+                    WebkitBackdropFilter: 'blur(var(--tooltip-backdrop))',
+                    boxShadow: 'var(--tooltip-shadow)'
+                  }}>
+                    {typeof tool.label === 'string' ? tool.label : '도구'}
+                  </div>
+                </div>
+              )}
             </button>
+            ) : null
           );
         })}
       </div>

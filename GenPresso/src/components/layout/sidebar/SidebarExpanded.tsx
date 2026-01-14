@@ -131,13 +131,14 @@ function Dashboard1() {
   );
 }
 
-function Logout() {
+function Logout({ onClick }: { onClick?: () => void }) {
   const { t } = useLanguage();
   return (
     <button 
       className="content-stretch flex flex-col h-[33px] items-start relative rounded-full shrink-0 w-full bg-secondary/10 border border-border/10 hover:bg-secondary/20 hover:border-primary/20 transition-all duration-200 cursor-pointer backdrop-blur-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" 
       data-name="Logout"
       aria-label={t('nav.logout')}
+      onClick={onClick}
     >
       <div className="basis-0 content-stretch flex gap-1 grow items-center min-h-px min-w-px relative shrink-0 w-full" data-name="text">
         <div className="basis-0 flex flex-col grow h-full justify-center leading-[0] min-h-px min-w-px not-italic relative shrink-0 text-sm text-center font-semibold text-glass-text hover:text-primary active:opacity-70 transition-all duration-200">
@@ -170,7 +171,7 @@ function ExpandBtn({ expanded, onClick }: { expanded: boolean; onClick: () => vo
 
 // --- Main Component ---
 
-export default function SidebarExpanded({ onClose, onNotificationClick, onMessageClick, onViewAllClick }: { onClose?: () => void; onNotificationClick?: () => void; onMessageClick?: () => void; onViewAllClick?: () => void }) {
+export default function SidebarExpanded({ onClose, onNotificationClick, onMessageClick, onViewAllClick, onLogout }: { onClose?: () => void; onNotificationClick?: () => void; onMessageClick?: () => void; onViewAllClick?: () => void; onLogout?: () => void }) {
   const { t } = useLanguage();
   const [isExpanded, setIsExpanded] = useState(true);
 
@@ -216,7 +217,7 @@ export default function SidebarExpanded({ onClose, onNotificationClick, onMessag
             <Bookmarks1 />
             <Dashboard1 />
             <Separator />
-            <Logout />
+            <Logout onClick={onLogout} />
             <Separator />
           </motion.div>
           

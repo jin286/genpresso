@@ -16,6 +16,7 @@ interface ExpandableSidebarProps {
   onFavoritesClick?: () => void;
   onDashboardClick?: () => void;
   onViewAllClick?: () => void;
+  onLogout?: () => void;
 }
 
 // 간소화된 토글 버튼 (SystemButton 활용)
@@ -54,6 +55,7 @@ const SidebarPanel = React.memo<{
   onNotificationClick?: () => void;
   onMessageClick?: () => void;
   onViewAllClick?: () => void;
+  onLogout?: () => void;
 }>(({ 
   isExpanded, 
   onToggleExpansion,
@@ -65,7 +67,8 @@ const SidebarPanel = React.memo<{
   onDashboardClick,
   onNotificationClick,
   onMessageClick,
-  onViewAllClick
+  onViewAllClick,
+  onLogout
 }) => {
   return (
     <motion.div 
@@ -138,7 +141,7 @@ const SidebarPanel = React.memo<{
               }
             }}
           >
-            <SidebarExpanded onClose={onClose} onNotificationClick={onNotificationClick} onMessageClick={onMessageClick} onViewAllClick={onViewAllClick} />
+            <SidebarExpanded onClose={onClose} onNotificationClick={onNotificationClick} onMessageClick={onMessageClick} onViewAllClick={onViewAllClick} onLogout={onLogout} />
           </motion.div>
         )}
       </AnimatePresence>
@@ -148,7 +151,7 @@ const SidebarPanel = React.memo<{
 
 SidebarPanel.displayName = 'SidebarPanel';
 
-const ExpandableSidebarComponent = ({ expansionLevel, onNavigate, width, onSettingsClick, onProjectsClick, onFavoritesClick, onDashboardClick, onViewAllClick }: ExpandableSidebarProps) => {
+const ExpandableSidebarComponent = ({ expansionLevel, onNavigate, width, onSettingsClick, onProjectsClick, onFavoritesClick, onDashboardClick, onViewAllClick, onLogout }: ExpandableSidebarProps) => {
   const isOpen = expansionLevel > 0;
   const isExpanded = expansionLevel === 2;
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
@@ -203,6 +206,7 @@ const ExpandableSidebarComponent = ({ expansionLevel, onNavigate, width, onSetti
               onNotificationClick={handleNotificationClick}
               onMessageClick={handleMessageClick}
               onViewAllClick={onViewAllClick}
+              onLogout={onLogout}
             />
           </motion.div>
         )}

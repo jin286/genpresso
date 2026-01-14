@@ -1,11 +1,13 @@
 import React, { useState, useCallback } from "react";
-import { Play, Upload } from "lucide-react";
+import { Play, Upload, Download, Info, Maximize2, Minimize2, Bookmark } from "lucide-react";
 import { Textarea } from "../../ui/textarea";
 import { ImageWithFallback } from "../../figma/ImageWithFallback";
 import { FileAttachPopover } from "../../ui/file-attach-popover";
 import { NodeFooter } from "./NodeFooter";
 import { ExpandToggle } from "./ExpandToggle";
 import { MetadataGrid } from "./MetadataGrid";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "../../ui/dialog";
+import { VisuallyHidden } from "../../ui/visually-hidden";
 import { toast } from "sonner@2.0.3";
 import {
   NODE_PADDING,
@@ -94,11 +96,31 @@ export const VideoNode = React.memo<VideoNodeProps>(({
   onGenerate,
 }) => {
   const { t } = useLanguage();
+  const [isVideoViewerOpen, setIsVideoViewerOpen] = useState(false);
+  const [showInfo, setShowInfo] = useState(true);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   
   const handleFrameClick = (frame: FrameType, e: React.MouseEvent) => {
     e.stopPropagation();
     onFrameSelect(selectedFrame === frame ? null : frame);
     toast.success(frame ? `${frame} Frame` : "");
+  };
+
+  const handlePlayClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsVideoViewerOpen(true);
+  };
+
+  const handleFullViewClick = () => {
+    setIsVideoViewerOpen(true);
+  };
+
+  const toggleFullscreen = () => {
+    setIsFullscreen(!isFullscreen);
+  };
+
+  const handleDownload = () => {
+    toast.success(`${t('node.video')} ${t('common.download')} ${t('common.started')}`);
   };
 
   return (
@@ -244,10 +266,7 @@ export const VideoNode = React.memo<VideoNodeProps>(({
                     INTERACTIVE_STYLES.HOVER_SCALE,
                     INTERACTIVE_STYLES.TRANSITION_ALL
                   )}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toast.success(t('node.videoPlaying'));
-                  }}
+                  onClick={handlePlayClick}
                   aria-label={t('node.play')}
                 >
                   <Play className={cn(NODE_ICON.SIZE_XL_CLASS, 'text-white ml-1')} />
@@ -257,8 +276,9 @@ export const VideoNode = React.memo<VideoNodeProps>(({
             <NodeFooter
               isBookmarked={isBookmarked}
               onBookmarkToggle={onBookmarkToggle}
-              onFullView={onFullView}
+              onFullView={handleFullViewClick}
               imageUrl={videoUrl}
+              mediaType="video"
             />
           </div>
         )}
@@ -354,6 +374,171 @@ export const VideoNode = React.memo<VideoNodeProps>(({
             </div>
           )}
         </>
+      )}
+
+      {/* 비디오 뷰어 Dialog */}
+      {videoUrl && (
+        <Dialog open={isVideoViewerOpen} onOpenChange={setIsVideoViewerOpen}>
+          <DialogContent 
+            className="max-w-[calc(100vw-2rem)] sm:max-w-6xl h-[90vh] p-0 gap-0 overflow-hidden flex flex-col border-[0.5px]"
+            style={{
+              backgroundColor: "var(--color-glass-bg)",
+              backdropFilter: "blur(var(--blur-glass))",
+              WebkitBackdropFilter: "blur(var(--blur-glass))",
+              borderColor: "var(--color-glass-border)",
+              boxShadow: "var(--glass-shadow)",
+            }}
+          >
+            <VisuallyHidden>
+              <DialogTitle>Video Viewer</DialogTitle>
+              <DialogDescription>
+                View video with controls and information
+              </DialogDescription>
+            </VisuallyHidden>
+
+            {/* 헤더 */}
+            <div
+              className="flex items-center justify-between px-6 py-4 border-b shrink-0"
+              style={{ borderColor: "var(--color-glass-border)" }}
+            >
+              <h2 className="text-base font-semibold text-foreground">
+                {`${t('node.videoViewer')} (노드)`}
+              </h2>
+              
+              <div className="flex items-center gap-2 mr-4">
+                <button
+                  onClick={() => setShowInfo(!showInfo)}
+                  className={cn(
+                    "w-7 h-7 flex items-center justify-center rounded-lg transition-colors",
+                    showInfo 
+                      ? "bg-primary text-primary-foreground" 
+                      : "hover:bg-secondary/20 text-muted-foreground hover:text-foreground"
+                  )}
+                  title={t('upload.basicInfo')}
+                >
+                  <Info className="w-4 h-4" />
+                </button>
+                
+                <button
+                  onClick={handleDownload}
+                  className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-secondary/20 text-muted-foreground hover:text-foreground transition-colors"
+                  title={t('common.download')}
+                >
+                  <Download className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+
+            {/* 메인 컨텐츠 */}
+            <div 
+              className="flex-1 relative overflow-hidden flex min-h-0" 
+              style={{ backgroundColor: 'var(--history-item-bg)' }}
+            >
+              <div className="flex-1 flex flex-col min-w-0 transition-all duration-300 ease-in-out overflow-y-auto">
+                {/* 비디오 영역 */}
+                <div className="flex-1 min-h-0 flex items-center justify-center overflow-hidden relative">
+                  <video
+                    src={videoUrl}
+                    controls
+                    className="w-full h-full object-contain"
+                    style={{ maxWidth: '100%', maxHeight: '100%' }}
+                  >
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              </div>
+
+              {/* 우측 정보 패널 - 전체화면일 때 숨김 */}
+              {!isFullscreen && (
+                <div 
+                  className={cn(
+                    "flex-shrink-0 border-l flex flex-col overflow-hidden transition-all duration-300 ease-in-out",
+                    showInfo ? "w-64 opacity-100 translate-x-0" : "w-0 opacity-0 translate-x-20 border-l-0"
+                  )}
+                  style={{ 
+                    borderColor: "var(--color-glass-border)",
+                    backgroundColor: 'rgba(20, 20, 21, 0.5)',
+                    backdropFilter: 'blur(12px)',
+                    WebkitBackdropFilter: 'blur(12px)',
+                  }}
+                >
+                  <div className="w-64 flex flex-col h-full overflow-y-auto p-6">
+                    <h3 className="text-sm font-semibold text-foreground mb-4">{t('upload.basicInfo')}</h3>
+                    <div className="space-y-4">
+                      {/* 파일명 */}
+                      <div>
+                        <p className="text-xs font-medium text-muted-foreground mb-1">{t('upload.filename')}</p>
+                        <p className="text-sm text-foreground">{metadata?.filename || "video_001.mp4"}</p>
+                      </div>
+
+                      {/* 생성일시 */}
+                      <div>
+                        <p className="text-xs font-medium text-muted-foreground mb-1">{t('upload.date')}</p>
+                        <p className="text-sm text-foreground">{metadata?.date || "2025-01-14 15:30"}</p>
+                      </div>
+                      
+                      {/* 사이즈 | 비율 | 길이 */}
+                      <div className="grid grid-cols-3 gap-4">
+                        {/* 사이즈 */}
+                        <div>
+                          <p className="text-xs font-medium text-muted-foreground mb-1">{t('node.size')}</p>
+                          <p className="text-sm text-foreground">{metadata?.size || "1280x720"}</p>
+                        </div>
+                        {/* 비율 */}
+                        <div>
+                          <p className="text-xs font-medium text-muted-foreground mb-1">{t('node.aspectRatio')}</p>
+                          <p className="text-sm text-foreground">{metadata?.aspectRatio || "16:9"}</p>
+                        </div>
+                        {/* 길이 */}
+                        <div>
+                          <p className="text-xs font-medium text-muted-foreground mb-1">{t('node.duration')}</p>
+                          <p className="text-sm text-foreground">{metadata?.duration || "5s"}</p>
+                        </div>
+                      </div>
+
+                      {/* 생성한 사람 */}
+                      <div>
+                        <p className="text-xs font-medium text-muted-foreground mb-1">{t('upload.creator')}</p>
+                        <p className="text-sm text-foreground">{metadata?.creator || t('profile.defaultName')}</p>
+                      </div>
+                    </div>
+
+                    {/* 구분선 */}
+                    <div className="my-6 h-px rounded-2xl" style={{
+                      backgroundImage: `url("data:image/svg+xml,%3Csvg width='100%25' height='1' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3CradialGradient id='grad' cx='50%25' cy='50%25' r='50%25'%3E%3Cstop offset='0%25' style='stop-color:rgba(255,255,255,0.2);stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:rgba(255,255,255,0);stop-opacity:1' /%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='100%25' height='1' fill='url(%23grad)' /%3E%3C/svg%3E")`
+                    }} />
+
+                    {/* 액션 버튼 섹션 */}
+                    <div className="space-y-3">
+                      <button
+                        onClick={handleDownload}
+                        className="w-full h-12 flex items-center justify-center gap-2 rounded-2xl text-white border text-base font-medium transition-all duration-200"
+                        style={{
+                          backgroundColor: 'var(--secondary)',
+                          borderColor: 'var(--color-glass-border)',
+                        }}
+                      >
+                        <Download className="w-5 h-5" />
+                        {t('common.download')}
+                      </button>
+
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onBookmarkToggle();
+                        }}
+                        className="w-full h-12 flex items-center justify-center gap-2 rounded-2xl bg-[#254B5E] hover:bg-[#254B5E]/90 text-white text-base font-medium transition-all duration-200"
+                      >
+                        <Bookmark className={cn("w-5 h-5", isBookmarked && "fill-current")} />
+                        {isBookmarked ? t('node.removeFromBookmark') : t('node.addToBookmark')}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </DialogContent>
+        </Dialog>
       )}
     </>
   );

@@ -5,6 +5,7 @@ import { toast } from "sonner@2.0.3";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "../../ui/dialog";
 import { VisuallyHidden } from "../../ui/visually-hidden";
 import { ImageWithFallback } from "../../figma/ImageWithFallback";
+import { cn } from "../../ui/utils";
 import {
   NODE_ICON,
   NODE_BUTTON,
@@ -12,7 +13,6 @@ import {
   NODE_TEXT,
   FLEX,
   INTERACTIVE_STYLES,
-  cn,
 } from "./node-styles";
 import type { Segment } from "../types";
 import { useLanguage } from "../../../contexts/LanguageContext";
@@ -28,6 +28,7 @@ interface NodeFooterProps {
   onBookmarkToggle: () => void;
   onFullView: () => void;
   imageUrl?: string;
+  mediaType?: 'image' | 'video'; // 미디어 타입 추가
   isSegmentActive?: boolean;
   onSegmentToggle?: () => void;
   segments?: Segment[];
@@ -149,21 +150,22 @@ const SegmentBox: React.FC<SegmentRectProps> = ({
 };
 
 const NodeFooterComponent: React.FC<NodeFooterProps> = ({
-  nodeId,
+  nodeId = "unknown",
   isBookmarked,
   onBookmarkToggle,
   onFullView,
   imageUrl,
+  mediaType = 'image', // 기본값 'image'로 설정
   isSegmentActive = false,
   onSegmentToggle,
   segments = [],
-  hoveredSegmentId = null,
+  hoveredSegmentId,
   onSegmentHover,
   onSegmentExtract,
 }) => {
   const { t } = useLanguage();
   const [isViewOpen, setIsViewOpen] = useState(false);
-  const [isInfoOpen, setIsInfoOpen] = useState(false);
+  const [isInfoOpen, setIsInfoOpen] = useState(true); // 기본값 true로 변경
   const [contextMenu, setContextMenu] = useState<{ segmentId: string; x: number; y: number } | null>(null);
   const [lockedSegmentId, setLockedSegmentId] = useState<string | null>(null);
 
@@ -305,7 +307,13 @@ const NodeFooterComponent: React.FC<NodeFooterProps> = ({
               icon={<Maximize2 />}
               onClick={(e) => {
                 e.stopPropagation();
-                imageUrl ? setIsViewOpen(true) : onFullView();
+                // 비디오 타입이면 항상 onFullView 호출 (VideoNode의 Dialog 사용)
+                if (mediaType === 'video') {
+                  onFullView();
+                } else {
+                  // 이미지 타입이면 imageUrl 유무에 따라 처리
+                  imageUrl ? setIsViewOpen(true) : onFullView();
+                }
               }}
               label={t('node.viewFull')}
             />
@@ -336,7 +344,9 @@ const NodeFooterComponent: React.FC<NodeFooterProps> = ({
               style={{ borderColor: "var(--color-glass-border)" }}
             >
               <div>
-                <h2 className="text-base font-semibold text-foreground">이미지 뷰어</h2>
+                <h2 className="text-base font-semibold text-foreground">
+                  {mediaType === 'video' ? `${t('node.videoViewer')} (노드)` : `${t('node.imageViewer')} (노드)`}
+                </h2>
 
               </div>
               
@@ -376,13 +386,24 @@ const NodeFooterComponent: React.FC<NodeFooterProps> = ({
 
             {/* 메인 컨텐츠 영역 */}
             <div className="flex-1 relative overflow-hidden flex min-h-0 bg-muted/30">
-              {/* 이미지 영역 */}
+              {/* 미디어 영역 */}
               <div className="flex-1 flex items-center justify-center p-4 min-w-0 transition-all duration-300 ease-in-out">
-                <ImageWithFallback
-                  src={imageUrl}
-                  alt="Full view"
-                  className="max-w-full max-h-full object-contain shadow-sm"
-                />
+                {mediaType === 'video' ? (
+                  <video
+                    src={imageUrl}
+                    controls
+                    className="max-w-full max-h-full object-contain shadow-sm"
+                    style={{ maxHeight: 'calc(90vh - 200px)' }}
+                  >
+                    Your browser does not support the video tag.
+                  </video>
+                ) : (
+                  <ImageWithFallback
+                    src={imageUrl}
+                    alt="Full view"
+                    className="max-w-full max-h-full object-contain shadow-sm"
+                  />
+                )}
               </div>
 
               {/* 정보 패널 (우측 슬라이드) */}
@@ -399,31 +420,53 @@ const NodeFooterComponent: React.FC<NodeFooterProps> = ({
                     <div className="p-6 border-b" style={{ borderColor: "var(--color-glass-border)" }}>
                       <h3 className={cn(NODE_TEXT.SM, "font-semibold text-foreground mb-4")}>기본 정보</h3>
                       <div className="space-y-4">
+                        {/* 파일명 */}
                         <div>
-                          <p className="text-xs font-medium text-muted-foreground mb-1">파일명</p>
+                          <p className="text-xs font-medium text-muted-foreground mb-1">{t('upload.filename')}</p>
                           <p className="text-sm text-foreground break-all">generated-image.png</p>
                         </div>
+                        
+                        {/* 생성일시 */}
                         <div>
-                          <p className="text-xs font-medium text-muted-foreground mb-1">생성일시</p>
-                          <p className="text-sm text-foreground">2025-11-10 14:30</p>
+                          <p className="text-xs font-medium text-muted-foreground mb-1">{t('upload.date')}</p>
+                          <p className="text-sm text-foreground">2025-01-14 15:30</p>
                         </div>
+                        
+                        {/* 사이즈 | 비율 */}
+                        <div className="grid grid-cols-2 gap-4">
+                          {/* 사이즈 */}
+                          <div>
+                            <p className="text-xs font-medium text-muted-foreground mb-1">{t('node.size')}</p>
+                            <p className="text-sm text-foreground">1024 x 1024</p>
+                          </div>
+                          {/* 비율 */}
+                          <div>
+                            <p className="text-xs font-medium text-muted-foreground mb-1">{t('node.aspectRatio')}</p>
+                            <p className="text-sm text-foreground">1:1</p>
+                          </div>
+                        </div>
+                        
+                        {/* 생성한 사람 */}
                         <div>
-                          <p className="text-xs font-medium text-muted-foreground mb-1">해상도</p>
-                          <p className="text-sm text-foreground">1024 x 1024</p>
+                          <p className="text-xs font-medium text-muted-foreground mb-1">{t('upload.creator')}</p>
+                          <p className="text-sm text-foreground">{t('profile.defaultName')}</p>
                         </div>
                       </div>
                     </div>
 
                     {/* 액션 섹션 */}
                     <div className="p-6">
-                      <h3 className={cn(NODE_TEXT.SM, "font-semibold text-foreground mb-4")}>액션</h3>
                       <div className="space-y-3">
                         <button
                           onClick={handleDownload}
-                          className="w-full h-12 flex items-center justify-center gap-2 rounded-2xl bg-[#333333] hover:bg-[#333333]/90 text-white border border-[#444444] text-base font-medium transition-all duration-200"
+                          className="w-full h-12 flex items-center justify-center gap-2 rounded-2xl text-white border text-base font-medium transition-all duration-200"
+                          style={{
+                            backgroundColor: 'var(--secondary)',
+                            borderColor: 'var(--color-glass-border)',
+                          }}
                         >
                           <Download className="w-5 h-5" />
-                          이미지 다운로드
+                          {t('common.download')}
                         </button>
 
                         <button
@@ -462,4 +505,4 @@ const NodeFooterComponent: React.FC<NodeFooterProps> = ({
 
 NodeFooterComponent.displayName = "NodeFooter";
 
-export const NodeFooter = memo(NodeFooterComponent);
+export const NodeFooter = React.memo<NodeFooterProps>(NodeFooterComponent);

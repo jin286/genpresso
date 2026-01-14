@@ -1,6 +1,5 @@
 import React, { memo } from "react";
 import { Avatar, AvatarFallback } from "../ui/avatar";
-import { ShareButton } from "./ShareButton";
 import { CANVAS_MEMBER, getGlassmorphismStyle } from "../layout/layout-constants";
 import { useLanguage } from "../../contexts/LanguageContext";
 
@@ -13,22 +12,18 @@ interface MemberSectionProps {
   /** 추가 멤버 수 (기본값: 9) */
   additionalMembers?: number;
   
-  /** 공유 버튼 클릭 핸들러 */
-  onShare?: () => void;
-  
   /** 추가 CSS 클래스 */
   className?: string;
 }
 
 /**
  * MemberSection - 캔버스 멤버 영역 컴포넌트
- * 캔버스 우측 상단에 표시되는 멤버 정보 및 공유 버튼
+ * 캔버스 우측 상단에 표시되는 멤버 정보
  */
 function MemberSectionComponent({
   lastEdited,
   memberNames = CANVAS_MEMBER.MEMBER_NAMES,
   additionalMembers = CANVAS_MEMBER.ADDITIONAL_MEMBERS,
-  onShare,
   className = "",
 }: MemberSectionProps) {
   const { t, language } = useLanguage();
@@ -39,7 +34,7 @@ function MemberSectionComponent({
   return (
     <div className={`flex items-center gap-3 ${className}`}>
       {/* 편집 시간 */}
-      <span className="text-xs text-muted-foreground whitespace-nowrap">
+      <span className="hidden min-[1281px]:inline text-xs text-muted-foreground whitespace-nowrap">
         {displayLastEdited}
       </span>
 
@@ -77,11 +72,6 @@ function MemberSectionComponent({
             +{additionalMembers}명
           </span>
         )}
-
-        {/* 공유 버튼 - 컨테이너 안으로 이동, 크기 축소 */}
-        <div className="scale-75 origin-center">
-          <ShareButton onShare={onShare} />
-        </div>
       </div>
     </div>
   );

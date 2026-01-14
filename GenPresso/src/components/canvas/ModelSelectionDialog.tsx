@@ -128,7 +128,7 @@ export const ModelSelectionDialog = React.memo(function ModelSelectionDialog({
                       </div>
 
                       {/* 모델 설명 - 높이 통일을 위해 min-h 설정 및 줄 수 제한 */}
-                      <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2 min-h-[2.5em] whitespace-pre-line">
+                      <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">
                         {t(`model.descriptions.${model.id}`) || model.description}
                       </p>
                     </div>

@@ -1,5 +1,5 @@
 import { memo, useCallback, useState, useEffect, useRef } from "react";
-import { ArrowUpCircle, Eraser, Expand, Paintbrush, Palette, Lock, Trash2, LockKeyhole, MoreHorizontal, Maximize2, Minimize2, Download, Scissors, FolderInput } from "lucide-react";
+import { ArrowUpCircle, Eraser, Expand, Paintbrush, Palette, Lock, Trash2, LockKeyhole, MoreHorizontal, Maximize2, Minimize2, Download, Scissors, FolderInput, MoreVertical } from "lucide-react";
 import { toast } from "sonner@2.0.3";
 import { CANVAS_UI, getGlassmorphismStyle } from "../layout/layout-constants";
 import type { AIToolId } from "../../types";
@@ -192,25 +192,13 @@ function TopToolbar({
           className="relative flex flex-nowrap items-center gap-1.5 px-1.5 py-1.5 rounded-xl border whitespace-nowrap"
           style={getGlassmorphismStyle()}
         >
-          {/* 드래그 핸들 - 툴바 외부 하단 중앙, 호버 시만 표시 */}
-          <div 
-            className="absolute -bottom-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 cursor-grab active:cursor-grabbing z-10"
-            onMouseDown={handleDragStart}
-            onContextMenu={handleContextMenu}
-            title={t('canvas.tools.dragToMove')}
-          >
-            <div className="bg-muted-foreground/20 hover:bg-muted-foreground/30 rounded-full px-1.5 py-0.5 backdrop-blur-sm">
-              <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
-            </div>
-          </div>
-          
           
           {topTools.map((tool) => {
             const label = t(tool.key);
             return (
               <button
                 key={tool.id}
-                className={`flex items-center gap-1.5 ${isCompact ? 'w-8 h-8 justify-center' : 'h-8 px-1.5'} py-1 rounded-lg transition-all duration-200 hover:bg-secondary/10 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
+                className={`group/btn relative flex items-center gap-1.5 ${isCompact ? 'w-8 h-8 justify-center' : 'h-8 px-1.5'} py-1 rounded-lg transition-all duration-200 hover:bg-secondary/10 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
                   activeTool === tool.id ? 'bg-secondary' : ''
                 }`}
                 onClick={() => handleToolClick(tool.id)}
@@ -225,6 +213,21 @@ function TopToolbar({
                 {!isCompact && (
                   <span className={`text-xs ${activeTool === tool.id ? 'text-primary' : ''}`}>{label}</span>
                 )}
+                
+                {/* 축소형일 때 상단 툴팁 */}
+                {isCompact && (
+                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
+                    <div className="px-2 py-1 rounded-md text-xs whitespace-nowrap" style={{
+                      backgroundColor: 'var(--tooltip-bg)',
+                      border: '0.5px solid var(--tooltip-border)',
+                      backdropFilter: 'blur(var(--tooltip-backdrop))',
+                      WebkitBackdropFilter: 'blur(var(--tooltip-backdrop))',
+                      boxShadow: 'var(--tooltip-shadow)'
+                    }}>
+                      {label}
+                    </div>
+                  </div>
+                )}
               </button>
             );
           })}
@@ -235,53 +238,125 @@ function TopToolbar({
               <div className="w-px h-6 bg-border mx-1" />
               {onSegmentSeparate && (
                 <button
-                  className={`flex items-center gap-1.5 ${isCompact ? 'w-8 h-8 justify-center' : 'h-8 px-1.5'} py-1 rounded-lg transition-all duration-200 hover:bg-secondary/10 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2`}
+                  className={`group/segment relative flex items-center gap-1.5 ${isCompact ? 'w-8 h-8 justify-center' : 'h-8 px-1.5'} py-1 rounded-lg transition-all duration-200 hover:bg-secondary/10 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2`}
                   onClick={onSegmentSeparate}
                   aria-label={t('canvas.aiTools.segmentSeparate')}
                   tabIndex={0}
                 >
                   <Scissors className="w-5 h-5" aria-hidden="true" />
                   {!isCompact && <span className="text-xs">{t('canvas.aiTools.segmentSeparate')}</span>}
+                  
+                  {/* 축소형일 때 상단 툴팁 */}
+                  {isCompact && (
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover/segment:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
+                      <div className="px-2 py-1 rounded-md text-xs whitespace-nowrap" style={{
+                        backgroundColor: 'var(--tooltip-bg)',
+                        border: '0.5px solid var(--tooltip-border)',
+                        backdropFilter: 'blur(var(--tooltip-backdrop))',
+                        WebkitBackdropFilter: 'blur(var(--tooltip-backdrop))',
+                        boxShadow: 'var(--tooltip-shadow)'
+                      }}>
+                        {t('canvas.aiTools.segmentSeparate')}
+                      </div>
+                    </div>
+                  )}
                 </button>
               )}
 
               <div className="w-px h-6 bg-border mx-1" />
               {onLockSelected && (
                 <button
-                  className={`flex items-center gap-1.5 ${isCompact ? 'w-8 h-8 justify-center' : 'h-8 px-1.5'} py-1 rounded-lg transition-all duration-200 hover:bg-secondary/10 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2`}
+                  className={`group/lock relative flex items-center gap-1.5 ${isCompact ? 'w-8 h-8 justify-center' : 'h-8 px-1.5'} py-1 rounded-lg transition-all duration-200 hover:bg-secondary/10 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2`}
                   onClick={onLockSelected}
                   aria-label={t('canvas.aiTools.lock')}
                   tabIndex={0}
                 >
                   <LockKeyhole className="w-5 h-5" aria-hidden="true" />
                   {!isCompact && <span className="text-xs">{t('canvas.aiTools.lock')}</span>}
+                  
+                  {/* 축소형일 때 상단 툴팁 */}
+                  {isCompact && (
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover/lock:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
+                      <div className="px-2 py-1 rounded-md text-xs whitespace-nowrap" style={{
+                        backgroundColor: 'var(--tooltip-bg)',
+                        border: '0.5px solid var(--tooltip-border)',
+                        backdropFilter: 'blur(var(--tooltip-backdrop))',
+                        WebkitBackdropFilter: 'blur(var(--tooltip-backdrop))',
+                        boxShadow: 'var(--tooltip-shadow)'
+                      }}>
+                        {t('canvas.aiTools.lock')}
+                      </div>
+                    </div>
+                  )}
                 </button>
               )}
               {onDownloadSelected && (
                 <button
-                  className={`flex items-center gap-1.5 ${isCompact ? 'w-8 h-8 justify-center' : 'h-8 px-1.5'} py-1 rounded-lg transition-all duration-200 hover:bg-secondary/10 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2`}
+                  className={`group/download relative flex items-center gap-1.5 ${isCompact ? 'w-8 h-8 justify-center' : 'h-8 px-1.5'} py-1 rounded-lg transition-all duration-200 hover:bg-secondary/10 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2`}
                   onClick={onDownloadSelected}
                   aria-label={t('canvas.aiTools.download')}
                   tabIndex={0}
                 >
                   <Download className="w-5 h-5" aria-hidden="true" />
                   {!isCompact && <span className="text-xs">{t('canvas.aiTools.download')}</span>}
+                  
+                  {/* 축소형일 때 상단 툴팁 */}
+                  {isCompact && (
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover/download:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
+                      <div className="px-2 py-1 rounded-md text-xs whitespace-nowrap" style={{
+                        backgroundColor: 'var(--tooltip-bg)',
+                        border: '0.5px solid var(--tooltip-border)',
+                        backdropFilter: 'blur(var(--tooltip-backdrop))',
+                        WebkitBackdropFilter: 'blur(var(--tooltip-backdrop))',
+                        boxShadow: 'var(--tooltip-shadow)'
+                      }}>
+                        {t('canvas.aiTools.download')}
+                      </div>
+                    </div>
+                  )}
                 </button>
               )}
               <div className="w-px h-6 bg-border mx-1" />
               {onDeleteSelected && (
                 <button
-                  className={`flex items-center gap-1.5 ${isCompact ? 'w-8 h-8 justify-center' : 'h-8 px-1.5'} py-1 rounded-lg transition-all duration-200 hover:bg-destructive/10 focus:outline-none focus:ring-2 focus:ring-destructive focus:ring-offset-2`}
+                  className={`group/delete relative flex items-center gap-1.5 ${isCompact ? 'w-8 h-8 justify-center' : 'h-8 px-1.5'} py-1 rounded-lg transition-all duration-200 hover:bg-destructive/10 focus:outline-none focus:ring-2 focus:ring-destructive focus:ring-offset-2`}
                   onClick={onDeleteSelected}
                   aria-label={t('canvas.aiTools.delete')}
                   tabIndex={0}
                 >
                   <Trash2 className="w-5 h-5 text-destructive" aria-hidden="true" />
                   {!isCompact && <span className="text-xs text-destructive">{t('canvas.aiTools.delete')}</span>}
+                  
+                  {/* 축소형일 때 상단 툴팁 */}
+                  {isCompact && (
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover/delete:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
+                      <div className="px-2 py-1 rounded-md text-xs whitespace-nowrap" style={{
+                        backgroundColor: 'var(--tooltip-bg)',
+                        border: '0.5px solid var(--tooltip-border)',
+                        backdropFilter: 'blur(var(--tooltip-backdrop))',
+                        WebkitBackdropFilter: 'blur(var(--tooltip-backdrop))',
+                        boxShadow: 'var(--tooltip-shadow)'
+                      }}>
+                        {t('canvas.aiTools.delete')}
+                      </div>
+                    </div>
+                  )}
                 </button>
               )}
             </>
           )}
+
+          {/* 드래그 핸들 - 툴바 우측 중앙 오버레이, 호버 시만 표시 */}
+          <div 
+            className="absolute -right-3 top-1/2 -translate-y-1/2 cursor-grab active:cursor-grabbing opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10"
+            onMouseDown={handleDragStart}
+            onContextMenu={handleContextMenu}
+            title={t('canvas.tools.dragToMove')}
+          >
+            <div className="bg-muted-foreground/20 hover:bg-muted-foreground/30 rounded-full px-px py-1 backdrop-blur-sm transition-colors">
+              <MoreVertical className="w-4 h-4 text-muted-foreground" />
+            </div>
+          </div>
         </div>
       </nav>
 

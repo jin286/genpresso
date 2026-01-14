@@ -1,0 +1,5 @@
+LINE 1523:
+<CanvasWorkspace onBack={navigateToMain} scenarioId={currentScenario} onSelectedNodeCountChange={setSelectedNodeCount} />
+
+LINE 1528:
+<CanvasWorkspace onBack={navigateToMain} scenarioId={currentScenario} onSelectedNodeCountChange={setSelectedNodeCount} />

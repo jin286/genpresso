@@ -345,15 +345,57 @@ function SubscriptionContent({ onGoToPayment }: { onGoToPayment: () => void }) {
                    <Separator className="my-4 opacity-50" />
                    <div className="flex-1 mb-6">
                       <ul className="space-y-2 text-xs">
-                         {plan.features.map((feature, i) => (
-                           <React.Fragment key={i}>
-                             {feature === "이미지 배경 제거" && <Separator className="my-3 opacity-50" />}
-                             <li className={`text-muted-foreground break-keep tracking-tight ${feature.startsWith("Nano") || feature.startsWith("Veo") ? 'flex items-start gap-2 text-left' : 'text-center block'}`}>
-                               {(feature.startsWith("Nano") || feature.startsWith("Veo")) && <span className="text-primary mt-0.5 text-[10px]">●</span>}
-                               {feature}
-                             </li>
-                           </React.Fragment>
-                         ))}
+                         {plan.features.map((feature, i) => {
+                           // 한국어 텍스트를 번역 키로 매핑
+                           const getTranslatedFeature = (text: string) => {
+                             // Nano Banana / Veo 패턴 매칭
+                             if (text.includes('Nano Banana로')) {
+                               const planKey = plan.id.toLowerCase();
+                               if (text.includes('62개')) return t('subscription.planFeatures.free.item1');
+                               if (text.includes('250개')) return t('subscription.planFeatures.lite.item1');
+                               if (text.includes('437개')) return t('subscription.planFeatures.basic.item1');
+                               if (text.includes('1500개')) return t('subscription.planFeatures.pro.item1');
+                             }
+                             if (text.includes('Nano Banana 2로') || text.includes('Nano Banana Pro로')) {
+                               if (text.includes('20개')) return t('subscription.planFeatures.free.item2');
+                               if (text.includes('80개')) return t('subscription.planFeatures.lite.item2');
+                               if (text.includes('145개')) return t('subscription.planFeatures.basic.item2');
+                               if (text.includes('500개')) return t('subscription.planFeatures.pro.item2');
+                             }
+                             if (text.includes('Veo 3.1 fast로')) {
+                               if (text.includes('2개')) return t('subscription.planFeatures.free.item3');
+                               if (text.includes('9개')) return t('subscription.planFeatures.lite.item3');
+                               if (text.includes('16개')) return t('subscription.planFeatures.basic.item3');
+                               if (text.includes('57개')) return t('subscription.planFeatures.pro.item3');
+                             }
+                             
+                             // 공통 기능 매칭
+                             const featureMap: Record<string, string> = {
+                               '이미지 배경 제거': 'subscription.commonFeatures.bgRemoval',
+                               '이미지 내 특정 요소 지정': 'subscription.commonFeatures.elementSelect',
+                               '그룹화 및 관리': 'subscription.commonFeatures.grouping',
+                               '레퍼런스 이미지 업로드': 'subscription.commonFeatures.refUpload',
+                               '레퍼런스 이미지, 영상 무제한 업로드': 'subscription.commonFeatures.unlimitedRef',
+                               '에이전트와 무제한 대화 및 공동작업': 'subscription.commonFeatures.agentCollab',
+                               '빠른 서비스 응대': 'subscription.commonFeatures.fastResponse',
+                             };
+                             
+                             return featureMap[text] ? t(featureMap[text]) : text;
+                           };
+                           
+                           const translatedFeature = getTranslatedFeature(feature);
+                           const isSeparatorNeeded = feature === "이미지 배경 제거";
+                           
+                           return (
+                             <React.Fragment key={i}>
+                               {isSeparatorNeeded && <Separator className="my-3 opacity-50" />}
+                               <li className={`text-muted-foreground break-keep tracking-tight ${feature.startsWith("Nano") || feature.startsWith("Veo") ? 'flex items-start gap-2 text-left' : 'text-center block'}`}>
+                                 {(feature.startsWith("Nano") || feature.startsWith("Veo")) && <span className="text-primary mt-0.5 text-[10px]">●</span>}
+                                 {translatedFeature}
+                               </li>
+                             </React.Fragment>
+                           );
+                         })}
                       </ul>
                    </div>
                    <Button className={`w-full ${plan.borderHighlight ? 'bg-primary text-primary-foreground hover:bg-primary/90' : ''}`} variant={plan.borderHighlight ? "default" : "outline"}>

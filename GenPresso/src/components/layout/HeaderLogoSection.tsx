@@ -1,5 +1,6 @@
 import React, { memo } from "react";
 import { GenPressoLogo } from "./GenPressoLogo";
+import { GenPressoTextLogo } from "./GenPressoTextLogo";
 import { useLanguage } from "../../contexts/LanguageContext";
 
 /**
@@ -9,25 +10,29 @@ import { useLanguage } from "../../contexts/LanguageContext";
  * 
  * @features
  * - 언어 변경 버튼 (ko → en → ja 순환)
- * - GenPressoLogo
+ * - GenPressoLogo (심볼)
+ * - GenPressoTextLogo (메인화면에서만 표시)
  * - 라이트/다크모드 자동 대응
  * 
  * @props
  * - logoSize: 로고 크기 ("small" | "large", 기본값: "small")
  * - onLogoClick: 로고 클릭 핸들러 (선택)
  * - className: 추가 스타일 (선택)
+ * - showCanvas: 캔버스 모드 여부 (true: 심볼만, false: 심볼+텍스트)
  */
 
 interface HeaderLogoSectionProps {
   logoSize?: "small" | "large";
   onLogoClick?: () => void;
   className?: string;
+  showCanvas?: boolean;
 }
 
 export const HeaderLogoSection = memo(function HeaderLogoSection({ 
   logoSize = "small",
   onLogoClick,
-  className = ""
+  className = "",
+  showCanvas = false
 }: HeaderLogoSectionProps) {
   const { language, setLanguage, t } = useLanguage();
   
@@ -42,6 +47,7 @@ export const HeaderLogoSection = memo(function HeaderLogoSection({
   return (
     <div className="flex items-center gap-3">
       <GenPressoLogo size={logoSize} onClick={onLogoClick} />
+      {!showCanvas && <GenPressoTextLogo />}
     </div>
   );
 });

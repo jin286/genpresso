@@ -1,5 +1,6 @@
 import React, { memo, useState } from "react";
 import { GenPressoLogo } from "./GenPressoLogo";
+import { HeaderLogoSection } from "./HeaderLogoSection";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { Languages } from "lucide-react";
 import { IconUnifiedCoins } from "../icons";
@@ -93,13 +94,15 @@ interface AppHeaderProps {
   logoSize?: "small" | "large";
   onLogoClick?: () => void;
   showMobileStyle?: boolean;
+  showCredit?: boolean;
 }
 
 export const AppHeader = memo(function AppHeader({ 
   className = "", 
   logoSize = "small",
   onLogoClick,
-  showMobileStyle = false
+  showMobileStyle = false,
+  showCredit = true
 }: AppHeaderProps) {
   const { language, setLanguage, t } = useLanguage();
   
@@ -118,10 +121,14 @@ export const AppHeader = memo(function AppHeader({
         {/* 데스크톱 헤더 */}
         <header className="hidden md:flex absolute top-0 left-0 w-full h-16 px-2.5 z-[60] items-center justify-between pointer-events-none">
           <div className="flex items-center gap-3 pointer-events-auto">
-            <GenPressoLogo size={logoSize} onClick={onLogoClick} />
+            <HeaderLogoSection 
+              logoSize={logoSize} 
+              onLogoClick={onLogoClick}
+              showCanvas={false}
+            />
           </div>
           <div className="flex items-center gap-3 pointer-events-auto">
-            <CreditButton />
+            {showCredit && <CreditButton />}
           </div>
         </header>
 
@@ -150,10 +157,14 @@ export const AppHeader = memo(function AppHeader({
       className={`absolute top-0 left-0 w-full h-16 px-2.5 z-[60] flex items-center justify-between pointer-events-none ${className}`}
     >
       <div className="flex items-center gap-3 pointer-events-auto">
-        <GenPressoLogo size={logoSize} onClick={onLogoClick} />
+        <HeaderLogoSection 
+          logoSize={logoSize} 
+          onLogoClick={onLogoClick}
+          showCanvas={false}
+        />
       </div>
       <div className="flex items-center gap-3 pointer-events-auto">
-        <CreditButton />
+        {showCredit && <CreditButton />}
       </div>
     </header>
   );

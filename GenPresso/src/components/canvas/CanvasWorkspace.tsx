@@ -64,9 +64,10 @@ const SCENARIO_IDS = [
 interface CanvasWorkspaceProps {
   onBack?: () => void;
   scenarioId?: string | null;
+  onSelectedNodeCountChange?: (count: number) => void;
 }
 
-export default function CanvasWorkspace({ onBack, scenarioId }: CanvasWorkspaceProps) {
+export default function CanvasWorkspace({ onBack, scenarioId, onSelectedNodeCountChange }: CanvasWorkspaceProps) {
   const { t } = useLanguage();
   const canvasRef = useRef<HTMLDivElement>(null);
 
@@ -98,6 +99,11 @@ export default function CanvasWorkspace({ onBack, scenarioId }: CanvasWorkspaceP
   } | null>(null);
   const [isSelecting, setIsSelecting] = useState(false);
   const [selectedNodeIds, setSelectedNodeIds] = useState<string[]>([]);
+
+  // 선택된 노드 개수를 부모에게 전달
+  useEffect(() => {
+    onSelectedNodeCountChange?.(selectedNodeIds.length);
+  }, [selectedNodeIds.length, onSelectedNodeCountChange]);
 
   // Node & Edge state
   const [nodes, setNodes] = useState<Node[]>([]);

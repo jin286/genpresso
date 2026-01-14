@@ -30,10 +30,10 @@ function ShareButtonComponent({ onShare, className = "" }: ShareButtonProps) {
   return (
     <Button
       size="sm"
-      className={`w-11 h-11 p-0 rounded-full bg-primary/10 text-primary border border-primary/20 backdrop-blur-md hover:bg-primary/20 hover:scale-105 transition-all duration-200 hover:shadow-lg active:scale-95 ${className}`}
+      className={`w-9 h-9 p-0 rounded-full bg-primary/10 text-primary border border-primary/20 backdrop-blur-md hover:bg-primary/20 hover:scale-105 transition-all duration-200 hover:shadow-lg active:scale-95 ${className}`}
       onClick={handleShare}
     >
-      <Share2 className="w-4 h-4" />
+      <Share2 className="w-3.5 h-3.5" />
     </Button>
   );
 }

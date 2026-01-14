@@ -52,7 +52,7 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
   return (
     <div className="flex flex-col justify-between items-center min-h-screen w-full relative z-50">
       {/* 공통 헤더 컴포넌트 - 모바일 최적화 */}
-      <AppHeader logoSize="small" showMobileStyle />
+      <AppHeader logoSize="small" showMobileStyle showCredit={false} />
 
       {/* Main Login Card - 중앙 정렬 Wrapper */}
       <div className="flex items-center justify-center flex-1 w-full">

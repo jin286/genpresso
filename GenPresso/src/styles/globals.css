@@ -155,6 +155,12 @@
   --popover-icon-hover-bg: rgba(0, 0, 0, 0.2);
   --popover-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
   
+  /* 툴팁 배경 - 라이트모드 (글래스모피즘 스타일) */
+  --tooltip-bg: rgba(255, 255, 255, 0.85);
+  --tooltip-border: rgba(0, 0, 0, 0.15);
+  --tooltip-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.1);
+  --tooltip-backdrop: 12px;
+  
   /* 노드 타입별 뱃지 색상 - 라이트모드 */
   --node-badge-text-bg: rgba(34, 197, 94, 0.15);
   --node-badge-text-text: #16a34a;
@@ -435,6 +441,12 @@
   --popover-icon-bg: rgba(255, 255, 255, 0.1);
   --popover-icon-hover-bg: rgba(255, 255, 255, 0.2);
   --popover-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  
+  /* 툴팁 배경 - 다크모드 (글래스모피즘 스타일) */
+  --tooltip-bg: rgba(39, 39, 42, 0.85);
+  --tooltip-border: rgba(100, 100, 100, 0.25);
+  --tooltip-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  --tooltip-backdrop: 12px;
   
   /* 노드 타입별 뱃지 색상 - 다크모드 */
   --node-badge-text-bg: rgba(34, 197, 94, 0.2);
@@ -788,19 +800,178 @@
     gap: 8px !important;
   }
 
-  /* Toast 애니메이션 */
-  .toaster [data-sonner-toast] {
-    animation: toast-slide-in 0.2s ease-out !important;
+  /* Toast 시간 경과 프로그레스 바 */
+  .toast-with-close {
+    position: relative !important;
+    overflow: hidden !important; /* visible → hidden: 프로그레스 바가 Toast 밖으로 나가지 않도록 수정 */
   }
 
-  @keyframes toast-slide-in {
+  /* 기본 프로그레스 바 (Info - 파란색) */
+  .toast-glass-info.toast-with-close::after {
+    content: '' !important;
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 8px !important;
+    right: 8px !important;
+    height: 3px !important;
+    background: rgba(255, 255, 255, 0.95) !important; /* 흰색 (대비 강화) */
+    opacity: 1 !important;
+    transform-origin: left !important;
+    animation: toast-progress 4s linear forwards !important;
+    border-bottom-left-radius: 16px !important; /* 12px → 16px (Toast와 동일) */
+    border-bottom-right-radius: 16px !important;
+  }
+
+  /* Success 프로그레스 바 (녹색) */
+  .toast-glass-success.toast-with-close::after {
+    content: '' !important;
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 8px !important;
+    right: 8px !important;
+    height: 3px !important;
+    background: rgba(255, 255, 255, 0.95) !important; /* 흰색 (대비 강화) */
+    opacity: 1 !important;
+    transform-origin: left !important;
+    animation: toast-progress 4s linear forwards !important;
+    border-bottom-left-radius: 16px !important;
+    border-bottom-right-radius: 16px !important;
+  }
+
+  /* Error 프로그레스 바 (빨간색) */
+  .toast-glass-error.toast-with-close::after {
+    content: '' !important;
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 8px !important;
+    right: 8px !important;
+    height: 3px !important;
+    background: rgba(255, 255, 255, 0.95) !important; /* 흰색 (대비 강화) */
+    opacity: 1 !important;
+    transform-origin: left !important;
+    animation: toast-progress 4s linear forwards !important;
+    border-bottom-left-radius: 16px !important;
+    border-bottom-right-radius: 16px !important;
+  }
+
+  /* Warning 프로그레스 바 (주황색) */
+  .toast-glass-warning.toast-with-close::after {
+    content: '' !important;
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 8px !important;
+    right: 8px !important;
+    height: 3px !important;
+    background: rgba(255, 255, 255, 0.95) !important; /* 흰색 (대비 강화) */
+    opacity: 1 !important;
+    transform-origin: left !important;
+    animation: toast-progress 4s linear forwards !important;
+    border-bottom-left-radius: 16px !important;
+    border-bottom-right-radius: 16px !important;
+  }
+
+  /* 프로그레스 바 애니메이션 - 왼쪽에서 오른쪽으로 줄어듬 */
+  @keyframes toast-progress {
     from {
-      transform: translateY(100%);
-      opacity: 0;
+      transform: scaleX(1);
     }
     to {
-      transform: translateY(0);
-      opacity: 1;
+      transform: scaleX(0);
     }
+  }
+
+  /* Toast 호버 시 프로그레스 바 애니메이션 일시정지 */
+  .toast-glass-info.toast-with-close:hover::after,
+  .toast-glass-success.toast-with-close:hover::after,
+  .toast-glass-error.toast-with-close:hover::after,
+  .toast-glass-warning.toast-with-close:hover::after {
+    animation-play-state: paused !important;
+  }
+
+  /* Toast 커스텀 Close 버튼 스타일 - CloseButton 컴포넌트와 동일한 디자인 */
+  .toast-custom-close-btn {
+    position: absolute !important;
+    left: -8px !important;
+    top: -8px !important;
+    transform: none !important;
+    width: 16px !important;
+    height: 16px !important;
+    min-width: 16px !important;
+    min-height: 16px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border-radius: 16px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    opacity: 0 !important; /* Toast 호버 전에는 숨김 */
+    transition: all 200ms ease-out !important;
+    /* 진한 흰색 배경 (라이트모드용) */
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.92) 100%) !important;
+    border: 1px solid rgba(0, 0, 0, 0.35) !important; /* 더 진한 테두리 */
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3) !important; /* 더 진한 그림자 */
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    cursor: pointer !important;
+    z-index: 10 !important;
+  }
+
+  /* 다크모드 Close 버튼 배경 */
+  .dark .toast-custom-close-btn {
+    background: linear-gradient(180deg, rgba(60, 60, 65, 0.98) 0%, rgba(50, 50, 55, 0.92) 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5) !important;
+  }
+
+  /* Toast 호버 시 Close 버튼 나타남 */
+  .toast-with-close:hover .toast-custom-close-btn {
+    opacity: 1 !important;
+  }
+
+  /* Close 버튼 자체 호버 효과 (Toast 호버와 별개) */
+  .toast-custom-close-btn:hover {
+    transform: scale(1.15) !important;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.98) 100%) !important;
+  }
+
+  .dark .toast-custom-close-btn:hover {
+    background: linear-gradient(180deg, rgba(70, 70, 75, 1) 0%, rgba(60, 60, 65, 0.98) 100%) !important;
+  }
+
+  /* Close 버튼 X 아이콘 */
+  .toast-custom-close-btn::before,
+  .toast-custom-close-btn::after {
+    content: '' !important;
+    position: absolute !important;
+    width: 8px !important;
+    height: 1.5px !important; /* 1.2px → 1.5px (더 두껍게) */
+    background: rgba(0, 0, 0, 0.85) !important; /* 진한 검정 (라이트모드) */
+    border-radius: 1px !important;
+    transition: all 200ms ease-out !important;
+  }
+
+  /* 다크모드 X 아이콘 */
+  .dark .toast-custom-close-btn::before,
+  .dark .toast-custom-close-btn::after {
+    background: rgba(255, 255, 255, 0.9) !important; /* 진한 흰색 */
+  }
+
+  .toast-custom-close-btn::before {
+    transform: rotate(45deg) !important;
+  }
+
+  .toast-custom-close-btn::after {
+    transform: rotate(-45deg) !important;
+  }
+
+  /* Close 버튼 호버 시 X 아이콘 색상 변경 */
+  .toast-custom-close-btn:hover::before,
+  .toast-custom-close-btn:hover::after {
+    background: #4fa8d8 !important; /* 파란색 */
+  }
+
+  /* Sonner 기본 SVG 아이콘 숨김 */
+  .toast-custom-close-btn svg {
+    display: none !important;
   }
 }

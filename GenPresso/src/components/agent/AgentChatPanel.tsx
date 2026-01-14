@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { Button } from "../ui/button";
-import { IconSparkles } from "../icons";
+import { ArrowUp } from "lucide-react";
 import { toast } from "sonner";
 import { AgentAvatar } from "./AgentAvatar";
 import { StarIcon } from "./StarIcon";
@@ -10,6 +10,8 @@ import { useLanguage } from "../../contexts/LanguageContext";
 import { agentConversations } from "./agent-conversations";
 import type { ScenarioId } from "../../types";
 import { Resizable } from "re-resizable";
+import { AgentSettingsDialog } from "./AgentSettingsDialog";
+import { ModelSelectionDialog } from "../forms/ModelSelectionDialog";
 
 type TabType = "history" | "agent" | "system";
 
@@ -203,9 +205,11 @@ const ChatInput = React.memo(() => {
   const [inputValue, setInputValue] = useState("");
   const [isHovered, setIsHovered] = useState(false);
   const [isMultiLine, setIsMultiLine] = useState(false);
+  const [isAgentSettingsOpen, setIsAgentSettingsOpen] = useState(false);
+  const [isModelSelectionOpen, setIsModelSelectionOpen] = useState(false);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
 
-  const handleSend = useCallback(() => {
+  const handleSendMessage = useCallback(() => {
     if (inputValue.trim()) {
       toast.success(`메시지 전송: ${inputValue}`);
       setInputValue("");
@@ -219,18 +223,20 @@ const ChatInput = React.memo(() => {
   const handleKeyPress = useCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      handleSend();
+      handleSendMessage();
     }
-  }, [handleSend]);
+  }, [handleSendMessage]);
 
-  // Auto-resize textarea
+  // Auto-resize textarea & Multiline detection
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = 'auto';
       const scrollHeight = textareaRef.current.scrollHeight;
       
-      // 한 줄 높이(약 40-42px)보다 크면 멀티라인으로 간주
-      setIsMultiLine(scrollHeight > 45);
+      // lineHeight 1.6 기준으로 줄 수 계산 (더 정확한 감지)
+      // text-sm(14px) * 1.6 = 22.4px, text-base(16px) * 1.6 = 25.6px
+      // 한 줄: ~25px, 두 줄: ~50px → 기준을 35px로 낮춤
+      setIsMultiLine(scrollHeight > 35);
 
       // Limit max height to roughly 5 lines (approx 24px * 5 = 120px)
       textareaRef.current.style.height = `${Math.min(scrollHeight, 120)}px`;
@@ -238,54 +244,167 @@ const ChatInput = React.memo(() => {
   }, [inputValue]);
 
   return (
-    <div className="px-3 pb-3 pt-1">
+    <div className="p-2">
       <div className="flex items-end gap-2">
-        <div className="shrink-0 pb-1.5">
-          <FileAttachPopover 
-            align="start"
-            buttonClassName="!w-8 !h-8 !rounded-full !bg-[rgba(245,245,245,0.05)] !border-[0.726px] !border-[rgba(163,163,163,0.2)] hover:!bg-[rgba(245,245,245,0.1)] text-foreground !shadow-none transition-colors backdrop-blur-md"
-          />
-        </div>
-
+        {/* 입력창 (내부에 파일첨부/설정/모델 버튼 + 업로드 버튼 포함) */}
         <div 
-          className={`flex-1 relative border-[0.5px] border-solid ${isMultiLine ? 'rounded-[20px]' : 'rounded-full'} pl-3 pr-1.5 py-1 transition-all duration-200 flex items-end gap-2`}
+          className={`flex-1 relative border-[0.5px] border-solid ${isMultiLine ? 'rounded-[28px]' : 'rounded-full'} px-1.5 py-1.5 transition-all duration-200 flex items-center gap-1.5`}
           style={{
-            backgroundColor: isHovered ? 'var(--color-glass-hover-bg)' : 'var(--color-glass-bg)',
+            backgroundColor: 'var(--color-glass-bg)',
             backdropFilter: 'blur(var(--blur-glass))',
             WebkitBackdropFilter: 'blur(var(--blur-glass))',
             borderColor: 'var(--color-glass-border)',
-            boxShadow: isHovered ? 'var(--glass-shadow)' : 'none',
+            boxShadow: 'var(--glass-shadow)',
           }}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
         >
+          {/* 입력창 내부 좌측: 파일첨부, 설정, 모델 선택 버튼 */}
+          <div className="shrink-0 flex items-center gap-0 self-end">
+            {/* 파일 첨부 버튼 */}
+            <div className="relative group/attach">
+              <FileAttachPopover 
+                buttonClassName="!bg-transparent hover:!bg-[var(--glass-hover-bg)] !border-0 !shadow-none"
+                showLabel={false}
+              />
+              {/* 툴팁 */}
+              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover/attach:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
+                <div className="px-2 py-1 rounded-md text-xs whitespace-nowrap" style={{
+                  backgroundColor: 'var(--tooltip-bg)',
+                  border: '0.5px solid var(--tooltip-border)',
+                  backdropFilter: 'blur(var(--tooltip-backdrop))',
+                  WebkitBackdropFilter: 'blur(var(--tooltip-backdrop))',
+                  boxShadow: 'var(--tooltip-shadow)'
+                }}>
+                  {t('upload.attachFile')}
+                </div>
+              </div>
+            </div>
+            
+            {/* 설정 버튼 */}
+            <div className="relative group/settings">
+              <button
+                className="w-7 h-7 rounded-full flex items-center justify-center transition-colors"
+                style={{
+                  backgroundColor: 'transparent',
+                  color: 'var(--glass-icon)',
+                }}
+                onMouseEnter={(e) => {
+                  const btn = e.currentTarget;
+                  btn.style.backgroundColor = 'var(--glass-hover-bg)';
+                }}
+                onMouseLeave={(e) => {
+                  const btn = e.currentTarget;
+                  btn.style.backgroundColor = 'transparent';
+                }}
+                onClick={() => setIsAgentSettingsOpen(true)}
+                aria-label={t('agent.settings')}
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </button>
+              {/* 툴팁 */}
+              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover/settings:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
+                <div className="px-2 py-1 rounded-md text-xs whitespace-nowrap" style={{
+                  backgroundColor: 'var(--tooltip-bg)',
+                  border: '0.5px solid var(--tooltip-border)',
+                  backdropFilter: 'blur(var(--tooltip-backdrop))',
+                  WebkitBackdropFilter: 'blur(var(--tooltip-backdrop))',
+                  boxShadow: 'var(--tooltip-shadow)'
+                }}>
+                  {t('agent.settings')}
+                </div>
+              </div>
+            </div>
+            
+            {/* 모델 선택 버튼 */}
+            <div className="relative group/model">
+              <button
+                className="w-7 h-7 rounded-full flex items-center justify-center transition-colors"
+                style={{
+                  backgroundColor: 'transparent',
+                  color: 'var(--glass-icon)',
+                }}
+                onMouseEnter={(e) => {
+                  const btn = e.currentTarget;
+                  btn.style.backgroundColor = 'var(--glass-hover-bg)';
+                }}
+                onMouseLeave={(e) => {
+                  const btn = e.currentTarget;
+                  btn.style.backgroundColor = 'transparent';
+                }}
+                onClick={() => setIsModelSelectionOpen(true)}
+                aria-label={t('agent.modelSelection')}
+              >
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <circle cx="6" cy="6" r="2" />
+                  <circle cx="6" cy="12" r="2" />
+                  <circle cx="6" cy="18" r="2" />
+                  <circle cx="12" cy="6" r="2" />
+                  <circle cx="12" cy="12" r="2" />
+                  <circle cx="12" cy="18" r="2" />
+                  <circle cx="18" cy="6" r="2" />
+                  <circle cx="18" cy="12" r="2" />
+                  <circle cx="18" cy="18" r="2" />
+                </svg>
+              </button>
+              {/* 툴팁 */}
+              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover/model:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
+                <div className="px-2 py-1 rounded-md text-xs whitespace-nowrap" style={{
+                  backgroundColor: 'var(--tooltip-bg)',
+                  border: '0.5px solid var(--tooltip-border)',
+                  backdropFilter: 'blur(var(--tooltip-backdrop))',
+                  WebkitBackdropFilter: 'blur(var(--tooltip-backdrop))',
+                  boxShadow: 'var(--tooltip-shadow)'
+                }}>
+                  {t('agent.modelSelection')}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 텍스트 입력 */}
           <textarea
             ref={textareaRef}
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyPress}
             placeholder={t('common.workWithAgent')}
-            className="flex-1 bg-transparent text-foreground placeholder:text-muted-foreground focus:outline-none text-sm min-w-0 resize-none overflow-y-auto py-1.5"
+            className="flex-1 bg-transparent text-foreground placeholder:text-muted-foreground focus:outline-none text-sm min-w-0 resize-none overflow-y-auto py-0"
             rows={1}
             style={{ 
-              lineHeight: '1.5',
+              lineHeight: '1.6',
               maxHeight: '120px'
             }}
           />
 
+          {/* Generate button (Circular Black Button) */}
           <Button 
             size="icon"
-            className="shrink-0 rounded-full h-8 w-8 self-center bg-primary text-primary-foreground hover:bg-secondary hover:text-secondary-foreground flex items-center justify-center transition-all duration-200 shadow-sm"
-            onClick={handleSend}
+            className="shrink-0 rounded-full !h-8 !w-8 bg-primary text-primary-foreground hover:bg-primary/90 flex items-center justify-center p-0 transition-all duration-200 shadow-sm self-end"
+            onClick={handleSendMessage}
+            aria-label={t('common.generate')}
+            type="submit"
           >
-            <IconSparkles 
-              size={14} 
-              className="transition-colors duration-200"
-              color="currentColor"
+            <ArrowUp 
+              strokeWidth={2.5}
+              className="w-5 h-5 text-primary-foreground"
             />
           </Button>
         </div>
       </div>
+
+      {/* 에이전트 설정 Dialog */}
+      <AgentSettingsDialog
+        isOpen={isAgentSettingsOpen}
+        onClose={() => setIsAgentSettingsOpen(false)}
+      />
+
+      {/* 모델 선택 Dialog */}
+      <ModelSelectionDialog
+        isOpen={isModelSelectionOpen}
+        onClose={() => setIsModelSelectionOpen(false)}
+      />
     </div>
   );
 });
@@ -359,10 +478,10 @@ const AgentChatPanelComponent = ({ onClose, scenarioId }: AgentChatPanelProps) =
   return (
     <Resizable
       defaultSize={{
-        width: 320,
+        width: 360,
         height: window.innerHeight * 0.6, // 60vh
       }}
-      minWidth={320}
+      minWidth={360}
       minHeight={400}
       maxWidth={800}
       maxHeight={window.innerHeight * 0.9}
@@ -381,7 +500,7 @@ const AgentChatPanelComponent = ({ onClose, scenarioId }: AgentChatPanelProps) =
         bottom: { cursor: 'ns-resize' },
         bottomLeft: { cursor: 'nesw-resize' },
       }}
-      className="rounded-2xl flex flex-col z-[90] border-[0.5px] border-solid"
+      className="rounded-2xl flex flex-col z-[90] border-[0.5px] border-solid overflow-hidden"
       style={{
         position: 'absolute',
         right: '16px',

@@ -1,23 +1,31 @@
 import React from "react";
-import svgPaths from "../../imports/svg-lbfclmskmi";
+import svgPaths from "../../imports/svg-do4bd5hqx8";
 
 export function GenPressoSymbol() {
   return (
     <div className="relative size-full translate-x-1" data-name="다크 심볼">
-      <svg className="block size-full" fill="none" viewBox="0 0 93 69">
-        <g id="Frame 1">
-          <path d={svgPaths.p3c292c00} fill="url(#paint0_linear_1555_2028)" id="Vector" />
-          <path d={svgPaths.p2bce8940} fill="url(#paint1_linear_1555_2028)" id="Vector_2" />
+      <svg className="block size-full" fill="none" viewBox="0 0 121 121">
+        <g clipPath="url(#clip0_1663_19)" id="Layer_1">
+          <path d={svgPaths.p3f09a300} fill="url(#paint0_linear_1663_19)" id="Vector" />
+          <path d={svgPaths.p798ea00} fill="url(#paint1_linear_1663_19)" id="Vector_2" />
+          <path d={svgPaths.p2fbc1200} fill="url(#paint2_linear_1663_19)" id="Vector_3" />
         </g>
         <defs>
-          <linearGradient gradientUnits="userSpaceOnUse" id="paint0_linear_1555_2028" x1="46.5045" x2="46.5045" y1="1.52623" y2="82.1958">
+          <linearGradient gradientUnits="userSpaceOnUse" id="paint0_linear_1663_19" x1="60.4999" x2="60.4999" y1="0.14502" y2="121.145">
             <stop stopColor="white" />
             <stop offset="1" stopColor="#898989" />
           </linearGradient>
-          <linearGradient gradientUnits="userSpaceOnUse" id="paint1_linear_1555_2028" x1="46.5045" x2="46.5045" y1="1.52614" y2="82.1957">
-            <stop stopColor="white" />
-            <stop offset="1" stopColor="#898989" />
+          <linearGradient gradientUnits="userSpaceOnUse" id="paint1_linear_1663_19" x1="60.5044" x2="60.5044" y1="25.427" y2="96.1953">
+            <stop stopColor="#4FA8D8" />
+            <stop offset="1" stopColor="#3590C0" />
           </linearGradient>
+          <linearGradient gradientUnits="userSpaceOnUse" id="paint2_linear_1663_19" x1="60.5" x2="60.5" y1="26.478" y2="100.555">
+            <stop stopColor="#4FA8D8" />
+            <stop offset="1" stopColor="#3590C0" />
+          </linearGradient>
+          <clipPath id="clip0_1663_19">
+            <rect fill="white" height="121" width="121" />
+          </clipPath>
         </defs>
       </svg>
     </div>

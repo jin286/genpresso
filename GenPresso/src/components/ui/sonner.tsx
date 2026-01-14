@@ -13,27 +13,28 @@ const Toaster = ({ ...props }: ToasterProps) => {
       key={isMobile ? "mobile" : "desktop"}
       theme={theme as ToasterProps["theme"]}
       className="toaster group"
-      position="top-center"
+      position="top-right"
       expand={false}
       gap={8}
       richColors
-      offset={isMobile ? 80 : 10}
+      offset={isMobile ? 80 : 65}
       visibleToasts={1}
-      style={
-        {
-          "--normal-bg": "hsl(var(--card))",
-          "--normal-text": "var(--popover-foreground)",
-          "--normal-border": "var(--border)",
-        } as React.CSSProperties
-      }
+      closeButton={true}
+      style={{
+        "--normal-bg": "hsl(var(--card))",
+        "--normal-text": "var(--popover-foreground)",
+        "--normal-border": "var(--border)",
+        right: isMobile ? "10px" : "80px",
+      } as React.CSSProperties}
       toastOptions={{
         unstyled: true,
         classNames: {
-          toast: "group w-full min-w-[280px] max-w-[340px] rounded-2xl border-[0.5px] px-3 py-2 shadow-lg flex items-center gap-2.5",
+          toast: "toast-with-close group w-full min-w-[280px] max-w-[340px] rounded-2xl border-[0.5px] px-3 py-2 shadow-lg flex items-center gap-2.5",
           title: "text-sm leading-tight flex-1",
           description: "text-xs opacity-75 mt-1 leading-relaxed",
           actionButton: "bg-zinc-400 text-zinc-950",
           cancelButton: "bg-orange-400 text-orange-950",
+          closeButton: "toast-custom-close-btn",
           info: "toast-glass-info",
           success: "toast-glass-success",
           error: "toast-glass-error",
@@ -67,7 +68,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
         warning: (
           <div className="flex-shrink-0 w-6 h-6 rounded-full bg-amber-500 flex items-center justify-center">
             <svg width="12" height="12" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M7 4.5V7.5M7 9.5H7.005M3 11.5L7 3.5L11 11.5H3Z" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M7 4.5V7.5M7 9.5H7.005M3 11.5L7 3.5L11 11.5H3Z" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
         ),

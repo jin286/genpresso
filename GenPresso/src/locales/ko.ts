@@ -23,6 +23,7 @@ export default {
     remove: "제거",
     upload: "업로드",
     download: "다운로드",
+    started: "시작",
     share: "공유",
     copy: "복사",
     paste: "붙여넣기",
@@ -454,6 +455,10 @@ export default {
     expand: "확장",
     collapse: "접기",
     viewFull: "전체보기",
+    imageViewer: "이미지 뷰어",
+    videoViewer: "비디오 뷰어",
+    fullscreen: "전체화면",
+    minimize: "축소",
     metadata: "메타데이터",
     prompt: "프롬프트",
     model: "모델",
@@ -508,7 +513,10 @@ export default {
     fileAttached: "파일 첨부 완료: {{name}}",
     convertToImage: "이미지 노드로 변환 (준비중)",
     convertToVideo: "비디오 노드로 변환 (준비중)",
-    convertToText: "텍스트 노드로 변환 (준비중)"
+    convertToText: "텍스트 노드로 변환 (준비중)",
+    downloadVideo: "비디오 다운로드",
+    addToBookmark: "북마크에 추가",
+    removeFromBookmark: "북마크 해제"
   },
   mix: {
     mainReference: "메인 레퍼런스",
@@ -528,6 +536,8 @@ export default {
     generationModel: "생성모델",
     generatedBy: "생성한 사람",
     creationDate: "생성일",
+    selectDate: "날짜 선택",
+    totalResults: "총 {{count}}개의 결과",
     noResults: "결과가 없습니다",
     tryDifferentFilters: "다른 필터를 시도해보세요",
     imageType: "이미지",
@@ -548,6 +558,9 @@ export default {
     sortDate: "날짜순",
     sortName: "이름순",
     sortSize: "크기순",
+    sortRecent: "최신순",
+    sortPopular: "인기순",
+    sortLiked: "좋아요순",
     filterBy: "필터",
     shareLinkCopied: "공유 링크가 복사되었습니다",
     shareLinkFailed: "링크 복사에 실패했습니다",
@@ -562,6 +575,10 @@ export default {
     prompt: "프롬프트",
     promptCopied: "프롬프트가 복사되었습니다.",
     generationInfo: "생성 정보",
+    aiProvider: "AI 제공자",
+    usedAiModel: "사용 AI 모델",
+    processingTime: "처리 시간",
+    creditUsage: "크레딧 사용량",
     model: "모델",
     resolution: "해상도",
     aspectRatio: "가로세로 비율",
@@ -693,12 +710,17 @@ export default {
     },
     modelSelection: {
       title: "모델 선택",
+      description: "AI 생성에 사용할 모델을 선택하세요",
       textDescription: "텍스트 프롬프트로 이미지 또는 비디오를 생성할 수 있는 모델입니다",
       imageDescription: "이미지를 편집하거나 비디오로 변환할 수 있는 모델입니다",
       videoDescription: "비디오를 편집하거나 스타일을 변환할 수 있는 모델입니다",
       textShortDescription: "이미지를 생성할 수 있는 모델입니다",
       imageShortDescription: "이미지를 편집하거나 비디오로 변환할 수 있는 모델입니다",
-      videoShortDescription: "비디오를 편집하거나 스타일을 변환할 수 있는 모델입니다"
+      videoShortDescription: "비디오를 편집하거나 스타일을 변환할 수 있는 모델입니다",
+      imageTab: "이미지",
+      videoTab: "비디오",
+      "3dTab": "3D 모델",
+      recommended: "추천"
     },
     contextMenu: {
       videoGenerate: "비디오 생성",
@@ -838,7 +860,80 @@ export default {
     historyBackgroundRemoved: "배경 제거 작업",
     historyStyleGuideUpdated: "스타일 가이드 업데이트",
     historyMemberInvited: "팀원 초대 ({{name}})",
-    historyProjectSettingsChanged: "프로젝트 설정 변경"
+    historyProjectSettingsChanged: "프로젝트 설정 변경",
+    
+    // ChatInput - 버튼 관련
+    settings: "에이전트 설정",
+    settingsClicked: "에이전트 설정 버튼 클릭됨",
+    modelSelection: "모델 선택",
+    modelSelectionClicked: "모델 선택 버튼 클릭됨"
+  },
+  agentSettings: {
+    title: "에이전트 설정",
+    description: "AI 에이전트를 생성하고 설정합니다",
+    selectDescription: "캔버스에서 작업을 함께할 에이전트를 선택해주세요.",
+    selectSubDescription: "나만의 에이전트를 만들거나, 추천 에이전트로 바로 시작하세요.",
+    recommendedAgents: "추천 에이전트",
+    customAgents: "맞춤형 에이전트",
+    createCustom: "맞춤형 에이전트 만들기",
+    noCustomAgents: "아직 맞춤형 에이전트가 없습니다. 새로 생성해보세요!",
+    orDivider: "또는",
+    
+    // 추천 에이전트 7개
+    productDesign: "제품 디자인 에이전트",
+    productDesignDesc: "제품 시각화 및 산업 디자인에 최적화",
+    brandDesign: "브랜드 디자인 에이전트",
+    brandDesignDesc: "일관된 브랜드 아이덴티티와 비주얼시스템 제작",
+    adDesign: "제품 광고 에이전트",
+    adDesignDesc: "매력적인 광고 및 마케팅 비주얼 디자인",
+    fashion: "패션 에이전트",
+    fashionDesc: "패션 및 의류 디자인에 특화",
+    film: "영화 에이전트",
+    filmDesc: "영화 제작 및 스토리보드에 완벽",
+    spaceDesign: "공간 디자인 에이전트",
+    spaceDesignDesc: "인테리어 및 건축 시각화 제작",
+    character: "캐릭터 디자인 에이전트",
+    characterDesc: "캐릭터 생성 및 개발 전문화",
+    
+    // 생성 폼 라벨
+    name: "이름",
+    role: "역할",
+    personality: "성격",
+    systemPrompt: "시스템 프롬프트",
+    
+    nameLabel: "에이전트 이름",
+    namePlaceholder: "예: 디자인 어시스턴트",
+    nameDescription: "에이전트를 식별할 수 있는 이름을 입력하세요",
+    nameRequired: "에이전트 이름을 입력해주세요",
+    roleLabel: "에이전트 역할",
+    rolePlaceholder: "예: UI/UX 디자인 전문가",
+    roleDescription: "에이전트의 주요 역할과 전문 분야를 설정하세요",
+    personalityLabel: "에이전트 성격",
+    personalityPlaceholder: "예: 친절하고 전문적인",
+    personalityDescription: "에이전트의 대화 스타일과 성격을 정의하세요",
+    systemPromptLabel: "시스템 프롬프트",
+    systemPromptPlaceholder: "AI 에이전트의 동작 방식과 응답 스타일을 정의하는 프롬프트를 입력하세요...",
+    systemPromptDescription: "에이전트의 전반적인 행동 방식을 설정합니다",
+    saveSuccess: "에이전트 설정이 저장되었습니다",
+    
+    // 생성 화면
+    createTitle: "맞춤형 에이전트 생성",
+    createDescription: "AI 에이전트가 캔버스에서 어떻게 동작할지 정의하세요",
+    agentNameLabel: "에이전트 이름 (필수)",
+    agentNamePlaceholder: "예: 미드 센추리 가구 디자인 에이전트",
+    templateLabel: "에이전트 템플릿",
+    templateNone: "없음",
+    goalLabel: "에이전트 목표",
+    goalPlaceholder: "예: 미드 센추리 모던 스타일을 반영한 테이블과 의자를 디자인합니다.",
+    focusLabel: "에이전트가 집중할 것",
+    focusPlaceholder: "태그 입력 후 Enter",
+    avoidLabel: "에이전트가 피해야 할 것",
+    avoidPlaceholder: "태그 입력 후 Enter",
+    addButton: "추가",
+    backToSelect: "선택 화면으로",
+    createButton: "생성하기",
+    selectAndApply: "선택 및 적용",
+    createSuccess: "맞춤형 에이전트가 생성되었습니다"
   },
   help: {
     title: "도움말",
@@ -871,6 +966,7 @@ export default {
     favorites: "즐겨찾기",
     shared: "공유됨",
     archived: "보관됨",
+    active: "사용중",
     new: "새 프로젝트",
     rename: "이름 변경",
     duplicate: "복제",
@@ -898,7 +994,7 @@ export default {
     searchNameCollaborators: "이름, 참여자 검색...",
     
     // GenPressoLayout - 메인 입력창 & 프로젝트 카드
-    createNewMessage: "새로운 프로젝트를 생성합니다!",
+    createNewMessage: "새운 프로젝트를 생성합니다!",
     inputRequired: "내용을 입력해주세요",
     newProject: "새로운 프로젝트",
     startNew: "시작하기",
@@ -907,6 +1003,7 @@ export default {
     
     // GenPressoLayout - 북마크 시스템
     bookmark: "북마크",
+    bookmarked: "북마크됨",
     bookmarkAdded: "북마크에 추가되었습니다",
     bookmarkRemoved: "북마크가 해제되었습니다",
     noBookmarked: "북마크한 프로젝트가 없습니다",
@@ -923,6 +1020,26 @@ export default {
     totalCanvases: "총 {{count}}개의 캔버스",
     createCanvas: "캔버스 만들기",
     start: "시작하기",
+    
+    // Dashboard & Activity
+    favoritesDescription: "즐겨찾는 프로젝트 관리",
+    dashboardDescription: "워크스페이스 활동 개요",
+    totalProjects: "전체 프로젝트",
+    inProgress: "진행 중",
+    completed: "완료됨",
+    teamMembers: "팀 멤버",
+    recentActivity: "최근 활동",
+    projectCreated: "프로젝트 생성됨",
+    fileUploaded: "파일 업로드됨",
+    commentAdded: "댓글 추가됨",
+    projectModified: "프로젝트 수정됨",
+    opened: "열림",
+    
+    // Time Ago
+    timeAgo: {
+      hoursAgo: "{{count}}시간 전",
+      daysAgo: "{{count}}일 전"
+    }
   },
   member: {
     owner: "소유자",
@@ -993,7 +1110,7 @@ export default {
     providedCredits: "제공 크레딧",
     creditTopUp: "크레딧 충전",
     creditTopUpDescription: "필요한 만큼 크레딧을 추가로 충전하세요",
-    maxAmount: "최대 {{amount}}원",
+    maxAmount: "대 {{amount}}원",
     creditRefundNotice: "충전된 크레딧은 환불되지 않습니다",
     enterpriseInquiry: "기업 문의",
     enterpriseDescription1: "대규모 팀을 위한 맞춤형 플랜이 필요하신가요?",
@@ -1008,7 +1125,7 @@ export default {
     changePlanTitle: "구독 중인 요금제를 변경하시겠어요?",
     changePlanDescription: "변경하고자 하는 요금제를 선택해 주세요.",
     changeToSelectedPlan: "선택한 요금제로 변경",
-    changePlanNoticeTitle: "꼭 확인해주세요.",
+    changePlanNoticeTitle: "꼭 확인해주세.",
     changePlanNotice: "요금제 변경/구독 취소는 다음 결제일부터 적용됩니다. 이미 결제된 기간에 대해서는 환불이 불가능하며, 남은 기간 동안은 현재 요금제의 혜택을 계속 이용하실 수 있습니다.",
     couponError: "유효하지 않은 쿠폰입니다",
     planNames: {
@@ -1055,7 +1172,9 @@ export default {
     },
     currentPlanBadge: "현재 플랜",
     currentlySubscribing: "현재 구독 중",
-    selectPlanButton: "플랜 선택"
+    selectPlanButton: "플랜 선택",
+    vatIncluded: "*vat 포함",
+    discountBadge: "할인"
   },
   upload: {
     title: "파일 업로드",
@@ -1068,7 +1187,23 @@ export default {
     supportedFormats: "지원 형식",
     manageDescription: "업로드된 파일을 관리하고 프로젝트에 사용하세요",
     totalFiles: "총 {{count}}개 파일",
-    stats: "{{images}}개 이미지 · {{videos}}개 동영상"
+    stats: "{{images}}개 이미지 · {{videos}}개 동영상",
+    attachFile: "파일첨부",
+    uploadImage: "이미지 업로드",
+    uploadVideo: "동영상 업로드",
+    addMixNode: "믹스노드 추가",
+    uploadImagePreparing: "이미지 업로드 기능을 준비 중입니다.",
+    uploadVideoPreparing: "동영상 업로드 기능을 준비 중입니다.",
+    filename: "파일명",
+    date: "날짜",
+    size: "크기",
+    resolution: "해상도",
+    creator: "사용자",
+    scaleOptions: "배율 옵션",
+    importToCanvas: "캔버스에 추가",
+    basicInfo: "기본 정보",
+    uploadReady: "파일 업로드 기능 (준비중)",
+    imageOrVideo: "이미지 또는 동영상"
   },
   model: {
     select: "모델 선택",
@@ -1090,19 +1225,21 @@ export default {
     totalCredits: "총 크레딧",
     creditsUnit: "크레딧",
     descriptions: {
-      "nano-banana": "텍스트 기반 빠른 이미지 생성 경량모델.\\n간단한 이미지 생성에 최적화.",
-      "gemini-2.5-flash": "Google 최신 이미지 생성 모델.\\n빠른 속도와 높은 품질.",
-      "seedream-4.0": "고급 이미지 생성 및 스타일 전환.\\n복잡한 프롬프트 이해 가능.",
-      "veo-3.1-fast": "빠른 비디오 생성.\\n속도와 품질 균형.",
-      "veo-3.1": "고품질 비디오 생성.\\n정교한 디테일과 자연스러운 움직임.",
-      "sora-2": "OpenAI 최신 비디오 생성 기술.\\n최고 품질의 비디오 생성.",
-      "nano-banana-img": "이미지 편집·스타일 변환 경량모델.\\n빠른 이미지 변환 작업 최적화.",
-      "gemini-2.5-flash-img": "Google 최신 이미지 편집 모델.\\n빠른 정확한 변환.",
-      "seedream-4.0-img": "고급 이미지 편집 및 스타일 전환.\\n복잡한 조정 가능.",
-      "sora-2-img": "이미지 기반 비디오 생성.\\nOpenAI 최신 기술.",
-      "sora-2-pro": "Sora 2의 프로 버전.\\n최고 품질 비디오 생성.",
-      "veo-3.1-fast-img": "이미지를 비디오로 빠르게 변환.\\n짧은 시간 내 결과 확인.",
-      "veo-3.1-img": "고품질 이미지 기반 비디오 생성.\\n자연스러운 동작 구현."
+      "nano-banana": "텍스트 기반 빠른 이미지 생성 경량모델. 간단한 이미지 생성에 최적화.",
+      "gemini-2.5-flash": "Google 최신 이미지 생성 모델. 빠른 속도와 높은 품질.",
+      "seedream-4.0": "고급 이미지 생성 및 스타일 전환. 복잡한 프롬프트 이해 가능.",
+      "veo-3.1-fast": "빠른 비디오 생성. 속도와 품질 균형.",
+      "veo-3.1": "고품질 비디오 생성. 정교한 디테일과 자연스러운 움직임.",
+      "sora-2": "OpenAI 최신 비디오 생성 기술. 최고 품질의 비디오 생성.",
+      "nano-banana-img": "이미지 편집·스타일 변환 경량모델. 빠른 이미지 변환 작업 최적화.",
+      "gemini-2.5-flash-img": "Google 최신 이미지 편집 모델. 빠른 정확한 변환.",
+      "seedream-4.0-img": "고급 이미지 편집 및 스타일 전환. 복잡한 조정 가능.",
+      "sora-2-img": "이미지 기반 비디오 생성. OpenAI 최신 기술.",
+      "sora-2-pro": "Sora 2의 프로 버전. 최고 품질 비디오 생성.",
+      "sora-2-video": "비디오 편집 및 스타일 전환. OpenAI 최신 기술.",
+      "sora-2-pro-video": "Sora 2 Pro 비디오 편집. 최고 품질 비디오 변환.",
+      "veo-3.1-fast-img": "이미지를 비디오로 빠르게 변환. 짧은 시간 내 결과 확인.",
+      "veo-3.1-img": "고품질 이미지 기반 비디오 생성. 자연스러운 동작 구현."
     },
     videoLengthUnit: "초"
   },
