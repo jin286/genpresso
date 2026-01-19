@@ -289,7 +289,28 @@ export default {
     terms: "이용약관",
     privacyPolicy: "개인정보처리방침",
     chargeSuccess: "{{amount}} 크레딧이 충전되었습니다!",
-    chargeError: "결제 처리 중 오류가 발생했습니다."
+    chargeError: "결제 처리 중 오류가 발생했습니다.",
+    // Workspace Context (New)
+    workspacePersonal: "개인 워크스페이스",
+    workspacePersonalDescription: "여기서 구매한 크레딧은 개인 워크스페이스에서만 사용됩니다.",
+    workspaceOrgDescription: "이 워크스페이스에서는 워크스페이스 크레딧만 사용할 수 있습니다.",
+    // Purchase Helper Texts (New)
+    personalPurchaseHelper: "구매한 크레딧은 개인 워크스페이스에 할당됩니다.",
+    workspacePurchaseHelper: "여기서 구매한 크레딧은 이 워크스페이스에 속합니다.",
+    onlyOwnerCanPurchase: "워크스페이스 Owner만 크레딧을 구매할 수 있습니다.",
+    copyToPersonal: "개인 워크스페이스로 복사하고 작업 계속하기",
+    copyToPersonalHelper: "복사 후 개인 크레딧으로 작업을 계속할 수 있습니다.",
+    copiedToPersonal: "개인 워크스페이스로 복사되었습니다",
+    // Zero Credit State (New)
+    workspaceCreditsExhausted: "워크스페이스 크레딧이 모두 소진되었습니다.",
+    exhaustedOptions: "작업을 더 정교하게 다듬으려면 다음 옵션 중 하나를 선택하세요:",
+    copyToContinue: "개인 워크스페이스로 복사하고 계속하기",
+    personalCreditSubmission: "개인 크레딧으로 작업한 내용도 검토용으로 제출할 수 있습니다.",
+    // History Source Column (New)
+    source: "소스",
+    sourcePersonal: "개인",
+    sourceWorkspace: "워크스페이스",
+    sourceEvent: "이벤트"
   },
   workspace: {
     list: "워크스페이스 목록",
@@ -350,7 +371,12 @@ export default {
     delete: "삭제",
     selectWorkspace: "관리할 워크스페이스를 선택하세요",
     owner: "Owner",
-    pageInfo: "{{current}} / {{total}} 페이지"
+    pageInfo: "{{current}} / {{total}} 페이지",
+    // Workspace Credit Policy (New)
+    policyTitle: "워크스페이스 크레딧 정책",
+    policyContent: "여기서 생성된 모든 콘텐츠는 이 워크스페이스에 속합니다.",
+    policyPersonal: "개인 구매는 개인 워크스페이스에만 적용됩니다.",
+    policyOwner: "워크스페이스 Owner만 결제와 크레딧을 관리할 수 있습니다."
   },
   group: {
     title: "그룹",

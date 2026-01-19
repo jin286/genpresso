@@ -253,14 +253,14 @@ export const VideoNode = React.memo<VideoNodeProps>(({
             <video src={videoUrl} className="w-full h-full object-cover" />
             {isSelected && (
               <div className={cn(
-                'absolute inset-0 bg-black/20 z-10',
+                'absolute inset-0 bg-black/20 z-10 pointer-events-none',
                 FLEX.CENTER
               )}>
                 <button
                   className={cn(
                     NODE_BUTTON.SIZE_LG_CLASS,
                     NODE_RADIUS.FULL,
-                    'bg-black/60 backdrop-blur-sm',
+                    'bg-black/60 backdrop-blur-sm pointer-events-auto',
                     FLEX.CENTER,
                     'hover:bg-black/80',
                     INTERACTIVE_STYLES.HOVER_SCALE,

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Settings, Ban, Pencil, Trash2 } from "lucide-react";
+import { Settings, Ban, Pencil, Trash2, Plus } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -264,7 +264,7 @@ export function AgentSettingsDialog({ isOpen, onClose }: AgentSettingsDialogProp
                   }}
                 >
                   <div className="flex items-center justify-center gap-2">
-                    <span className="text-xl">✚</span>
+                    <Plus className="w-5 h-5 text-foreground" />
                     <span className="text-sm font-medium text-foreground">
                       {t('agentSettings.createCustom')}
                     </span>

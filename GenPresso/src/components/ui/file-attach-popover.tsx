@@ -56,7 +56,7 @@ export function FileAttachPopover({
             color: 'var(--glass-icon)',
           }}
         >
-          <Plus className="w-5 h-5 transition-colors" />
+          <Plus className="w-5 h-5 transition-colors block" />
           {showLabel && <span className="text-sm transition-colors">{t('upload.attachFile')}</span>}
         </Button>
       </PopoverTrigger>

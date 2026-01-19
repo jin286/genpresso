@@ -267,7 +267,28 @@ export default {
     terms: "利用規約",
     privacyPolicy: "プライバシーポリシー",
     chargeSuccess: "{{amount}}クレジットがチャージされました！",
-    chargeError: "決済処理中にエラーが発生しました。"
+    chargeError: "決済処理中にエラーが発生しました。",
+    // Workspace Context (New)
+    workspacePersonal: "個人ワークスペース",
+    workspacePersonalDescription: "ここで購入したクレジットは、個人ワークスペースでのみ使用されます。",
+    workspaceOrgDescription: "このワークスペースでは、ワークスペースクレジットのみ使用できます。",
+    // Purchase Helper Texts (New)
+    personalPurchaseHelper: "購入したクレジットは個人ワークスペースに割り当てられます。",
+    workspacePurchaseHelper: "ここで購入したクレジットは、このワークスペースに属します。",
+    onlyOwnerCanPurchase: "ワークスペースオーナーのみ、このワークスペースのクレジットを購入できます。",
+    copyToPersonal: "個人ワークスペースにコピーして作業を続ける",
+    copyToPersonalHelper: "コピー後、個人クレジットを使用して作業を続けることができます。",
+    copiedToPersonal: "個人ワークスペースにコピーされました",
+    // Zero Credit State (New)
+    workspaceCreditsExhausted: "ワークスペースクレジットが全て使用されました。",
+    exhaustedOptions: "作業をさらに洗練させるには、次のオプションのいずれかを選択してください：",
+    copyToContinue: "個人ワークスペースにコピーして続ける",
+    personalCreditSubmission: "個人クレジットで完成した作業もレビュー用に提出できます。",
+    // History Source Column (New)
+    source: "ソース",
+    sourcePersonal: "個人",
+    sourceWorkspace: "ワークスペース",
+    sourceEvent: "イベント"
   },
   workspace: {
     list: "ワークスペースリスト",
@@ -328,7 +349,12 @@ export default {
     delete: "削除",
     selectWorkspace: "管理するワークスペースを選択してください",
     owner: "オーナー",
-    pageInfo: "{{current}} / {{total}} ページ"
+    pageInfo: "{{current}} / {{total}} ページ",
+    // Workspace Credit Policy (New)
+    policyTitle: "ワークスペースクレジットポリシー",
+    policyContent: "ここで作成されたすべてのコンテンツは、このワークスペースに属します。",
+    policyPersonal: "個人購入は個人ワークスペースにのみ適用されます。",
+    policyOwner: "ワークスペースオーナーのみ、支払いとクレジットを管理できます。"
   },
   group: {
     title: "グループ",

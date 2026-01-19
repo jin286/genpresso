@@ -311,6 +311,24 @@ export function WorkspaceTab() {
 
   return (
     <div className="space-y-4">
+      {/* Rule 5: Workspace Credit Policy (Informational) */}
+      <div 
+        className="px-5 py-4 rounded-2xl border-[0.5px] border-solid"
+        style={{
+          backgroundColor: 'var(--agent-message-bg)',
+          borderColor: 'var(--glass-border)',
+          backdropFilter: 'blur(var(--glass-backdrop))',
+          WebkitBackdropFilter: 'blur(var(--glass-backdrop))',
+        }}
+      >
+        <h4 className="text-sm font-semibold text-foreground mb-2">{t('workspace.policyTitle')}</h4>
+        <ul className="space-y-1 text-xs text-muted-foreground">
+          <li>• {t('workspace.policyContent')}</li>
+          <li>• {t('workspace.policyPersonal')}</li>
+          <li>• {t('workspace.policyOwner')}</li>
+        </ul>
+      </div>
+
       <div className="flex items-center gap-3">
         <Button
           variant="ghost"

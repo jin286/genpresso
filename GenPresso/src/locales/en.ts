@@ -267,7 +267,28 @@ export default {
     terms: "Terms of Service",
     privacyPolicy: "Privacy Policy",
     chargeSuccess: "{{amount}} credits have been charged!",
-    chargeError: "An error occurred while processing payment."
+    chargeError: "An error occurred while processing payment.",
+    // Workspace Context (New)
+    workspacePersonal: "Personal Workspace",
+    workspacePersonalDescription: "Credits purchased here are used only in your personal workspace.",
+    workspaceOrgDescription: "Only workspace credits can be used here.",
+    // Purchase Helper Texts (New)
+    personalPurchaseHelper: "Purchased credits are assigned to your personal workspace.",
+    workspacePurchaseHelper: "Credits purchased here belong to this workspace.",
+    onlyOwnerCanPurchase: "Only workspace Owners can purchase credits for this workspace.",
+    copyToPersonal: "Copy to personal workspace and continue working",
+    copyToPersonalHelper: "You can continue using personal credits after copying.",
+    copiedToPersonal: "Copied to personal workspace",
+    // Zero Credit State (New)
+    workspaceCreditsExhausted: "Workspace credits have been fully used.",
+    exhaustedOptions: "To further refine your work, choose one of the following options:",
+    copyToContinue: "Copy to personal workspace and continue",
+    personalCreditSubmission: "Work completed with personal credits can be submitted for review.",
+    // History Source Column (New)
+    source: "Source",
+    sourcePersonal: "Personal",
+    sourceWorkspace: "Workspace",
+    sourceEvent: "Event"
   },
   workspace: {
     list: "Workspace List",
@@ -328,7 +349,12 @@ export default {
     delete: "Delete",
     selectWorkspace: "Select a workspace to manage",
     owner: "Owner",
-    pageInfo: "Page {{current}} of {{total}}"
+    pageInfo: "Page {{current}} of {{total}}",
+    // Workspace Credit Policy (New)
+    policyTitle: "Workspace Credit Policy",
+    policyContent: "All content created here belongs to this workspace.",
+    policyPersonal: "Personal purchases apply only to personal workspaces.",
+    policyOwner: "Only workspace Owners can manage payments and credits."
   },
   group: {
     title: "Group",
